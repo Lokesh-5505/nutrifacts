@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scan Food – NutriFacts</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<!-- Analyzing overlay -->
+<div class="analyzing-wrap" id="analyzing-overlay">
+  <div class="spin-ring"></div>
+  <h3>🔬 Analyzing Ingredients</h3>
+  <p id="analyzing-msg">Preparing analysis engine…</p>
+  <div class="analyzing-dots"><span></span><span></span><span></span></div>
+</div>
+
+<div class="page-wrap">
+  <div class="page-banner">
+    <div class="eyebrow">Step 1 of 1 · Scan</div>
+    <h1>Scan Your Food</h1>
+    <p>Use your camera or paste the ingredient list — our AI handles the rest.</p>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;">
+
+        <!-- ─ LEFT: Camera ─ -->
+        <div>
+          <div class="scan-panel">
+            <div class="scan-panel-header">
+              <h2>🎥 Camera Scanner</h2>
+              <p>Point at the ingredient list on the package</p>
+            </div>
+            <div class="scan-panel-body">
+              <div class="camera-stage">
+                <video id="camera-feed" autoplay playsinline></video>
+                <canvas id="camera-canvas"></canvas>
+                <div class="cam-overlay">
+                  <div class="cam-corners">
+                    <div class="cc cc-tl"></div><div class="cc cc-tr"></div>
+                    <div class="cc cc-bl"></div><div class="cc cc-br"></div>
+                  </div>
+                  <div class="scan-line-anim" id="scan-line-el"></div>
+                </div>
+                <div class="cam-placeholder" id="cam-placeholder">
+                  <div class="cam-icon">📷</div>
+                  <div class="cam-text">Camera not started</div>
+                  <div class="cam-sub">Click "Start Camera" below</div>
+                </div>
+              </div>
+              <div class="scan-btns">
+                <button class="scan-btn scan-btn-start" onclick="startCamera()">▶ Start Camera</button>
+                <button class="scan-btn scan-btn-cap" onclick="capturePhoto()">📸 Capture</button>
+                <button class="scan-btn scan-btn-stop" onclick="stopCamera()">⏹ Stop</button>
+              </div>
+              <div style="text-align:center;margin-top:16px;">
+                <label for="img-upload" style="cursor:pointer;color:var(--sage);font-size:0.85rem;font-weight:600;text-decoration:underline;text-underline-offset:3px;">
+                  📁 Or upload a photo instead
+                </label>
+                <input type="file" id="img-upload" accept="image/*" style="display:none;" onchange="handleUpload(this.files[0])">
+              </div>
+            </div>
+          </div>
+
+          <!-- Tip card -->
+          <div class="alert-bar info" style="margin-top:20px;">
+            <div class="alert-icon">💡</div>
+            <div>
+              <div class="alert-title">OCR Note</div>
+              <div class="alert-desc">Automatic text extraction from photos requires server-side OCR. For this demo, paste the ingredients in the text box on the right after capturing.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ RIGHT: Input ─ -->
+        <div style="display:flex;flex-direction:column;gap:22px;">
+
+          <!-- Product name -->
+          <div class="scan-panel">
+            <div class="scan-panel-header">
+              <h2>🏷️ Product Name</h2>
+              <p>Optional — helps generate a more accurate analysis</p>
+            </div>
+            <div class="scan-panel-body">
+              <input class="input-field" type="text" id="product-name" placeholder="e.g. Oreo Cookies, Lay's Classic…">
+            </div>
+          </div>
+
+          <!-- Ingredient text -->
+          <div class="scan-panel">
+            <div class="scan-panel-header">
+              <h2>📋 Ingredient List</h2>
+              <p>Paste or type exactly as shown on the package</p>
+            </div>
+            <div class="scan-panel-body">
+              <textarea class="text-field" id="ingredient-text" rows="5"
+                placeholder="e.g. Sugar, Enriched Flour, Palm Oil, High Fructose Corn Syrup, Soy Lecithin, Salt, Artificial Flavor…"></textarea>
+              <div style="margin-top:18px;">
+                <p style="font-size:0.78rem;font-weight:700;color:var(--text-faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">🎯 Try a demo product</p>
+                <div class="chip-row">
+                  <button class="chip" onclick="fillDemo('oreo')">🍪 Oreo Cookies</button>
+                  <button class="chip" onclick="fillDemo('lays')">🥔 Lay's Chips</button>
+                  <button class="chip" onclick="fillDemo('nutella')">🍫 Nutella</button>
+                  <button class="chip" onclick="fillDemo('yogurt')">🥛 Flavored Yogurt</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Analyze button -->
+          <button class="btn btn-primary btn-lg" style="width:100%;justify-content:center;border-radius:var(--r-md);" onclick="startAnalysis()">
+            🔬 Analyze Ingredients with AI
+          </button>
+
+          <!-- Tips -->
+          <div style="background:var(--safe-bg);border-radius:var(--r-md);padding:20px 24px;border:1px solid var(--safe-border);">
+            <p style="font-size:0.82rem;font-weight:700;color:var(--forest-mid);margin-bottom:10px;letter-spacing:.04em;">💡 TIPS FOR BEST RESULTS</p>
+            <ul style="font-size:0.83rem;color:var(--text-muted);padding-left:16px;line-height:2;list-style:disc;">
+              <li>Copy the <strong>complete</strong> ingredients list, not just part of it</li>
+              <li>Include preservatives, emulsifiers, and flavor agents</li>
+              <li>Include E-numbers if listed (e.g. E322, E471)</li>
+              <li>Separate ingredients with commas</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Previous result -->
+      <div id="prev-result-section" style="margin-top:48px;display:none;">
+        <h3 style="font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:18px;">📜 Last Analysis</h3>
+        <div style="background:var(--surface);border-radius:var(--r-md);padding:24px 28px;border:1px solid rgba(197,235,213,.5);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+          <div>
+            <div id="prev-name" style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--text-primary);margin-bottom:6px;"></div>
+            <div id="prev-badge"></div>
+            <p id="prev-summary" style="font-size:0.85rem;color:var(--text-muted);margin-top:6px;max-width:520px;line-height:1.6;"></p>
+          </div>
+          <a href="results.html" class="btn btn-forest btn-sm">View Results →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/scanner.js"></script>
+<script>
+  injectNavbar('scan.html');
+  injectFooter();
+
+  function fillDemo(type) {
+    const p = demoProducts[type];
+    if (!p) return;
+    document.getElementById('product-name').value = p.name;
+    document.getElementById('ingredient-text').value = p.ingredients;
+    showToast(`Loaded: ${p.name}`,'success');
+  }
+
+  // Show previous result
+  const prev = loadResult();
+  if (prev) {
+    document.getElementById('prev-result-section').style.display = 'block';
+    document.getElementById('prev-name').textContent = prev.productName || 'Unknown Product';
+    document.getElementById('prev-badge').innerHTML = `<span class="badge ${scoreBadgeClass(prev.healthScore)}">${scoreLabel(prev.healthScore)}</span>`;
+    document.getElementById('prev-summary').textContent = prev.summary || '';
+  }
+</script>
+</body>
+</html>

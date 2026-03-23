@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Harmful Ingredient Database – NutriFacts</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="page-wrap">
+      <div class="page-banner">
+        <div class="eyebrow">Safety Database</div>
+        <h1>Harmful Ingredient<br />Database</h1>
+        <p>
+          Comprehensive list of risky food additives, preservatives,
+          emulsifiers, and artificial ingredients found in packaged foods.
+        </p>
+      </div>
+
+      <section class="section">
+        <div class="container">
+          <!-- Stats -->
+          <div class="stats-strip" style="margin-bottom: 48px">
+            <div class="stat-cell">
+              <div class="stat-num" id="stat-total">0</div>
+              <div class="stat-lbl">Total Additives</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-num" id="stat-high">0</div>
+              <div class="stat-lbl">High Risk</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-num" id="stat-medium">0</div>
+              <div class="stat-lbl">Medium Risk</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-num" id="stat-banned">0</div>
+              <div class="stat-lbl">Banned (FDA)</div>
+            </div>
+          </div>
+
+          <!-- Search -->
+          <div class="search-wrap" style="margin-bottom: 24px">
+            <span class="s-icon">🔍</span>
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search ingredient name or E-number…"
+              oninput="renderList()"
+            />
+            <button
+              onclick="
+                document.getElementById('search-input').value = '';
+                renderList();
+              "
+              style="
+                background: none;
+                border: none;
+                color: var(--text-muted);
+                cursor: pointer;
+                font-size: 1.1rem;
+              "
+            >
+              ✕
+            </button>
+          </div>
+
+          <!-- Filters -->
+          <div class="filter-pills" style="margin-bottom: 12px">
+            <button
+              class="fpill active"
+              data-f="all"
+              id="all-filter-btn"
+              onclick="setFilter(this, 'all')"
+            >
+              🔘 All
+            </button>
+            <button
+              class="fpill"
+              data-f="high"
+              onclick="setFilter(this, 'high')"
+            >
+              ❌ High Risk
+            </button>
+            <button
+              class="fpill"
+              data-f="medium"
+              onclick="setFilter(this, 'medium')"
+            >
+              ⚠️ Medium Risk
+            </button>
+            <button class="fpill" data-f="low" onclick="setFilter(this, 'low')">
+              🟡 Low Risk
+            </button>
+            <button
+              class="fpill"
+              data-f="banned"
+              onclick="setFilter(this, 'banned')"
+            >
+              🚫 Banned
+            </button>
+            <button
+              class="fpill"
+              data-f="emulsifier"
+              onclick="setFilter(this, 'emulsifier')"
+            >
+              🧪 Emulsifiers
+            </button>
+            <button
+              class="fpill"
+              data-f="preservative"
+              onclick="setFilter(this, 'preservative')"
+            >
+              🧬 Preservatives
+            </button>
+            <button
+              class="fpill"
+              data-f="color"
+              onclick="setFilter(this, 'color')"
+            >
+              🎨 Colors
+            </button>
+            <button
+              class="fpill"
+              data-f="sweetener"
+              onclick="setFilter(this, 'sweetener')"
+            >
+              🍬 Sweeteners
+            </button>
+          </div>
+          <p
+            id="res-count"
+            style="
+              font-size: 0.82rem;
+              color: var(--text-muted);
+              margin-bottom: 28px;
+            "
+          ></p>
+
+          <!-- List -->
+          <div id="additives-list"></div>
+
+          <!-- Info footer -->
+          <div class="alert-bar info" style="margin-top: 40px">
+            <div class="alert-icon">ℹ️</div>
+            <div>
+              <div class="alert-title">About This Database</div>
+              <div class="alert-desc">
+                Compiled from FDA regulations, EFSA assessments, and
+                peer-reviewed health research. Risk levels reflect current
+                scientific consensus. "Banned" indicates restriction by major
+                food safety authorities (FDA, EFSA, Health Canada).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+      injectNavbar("harmful-list.html");
+      injectFooter();
+
+      const additives = [
+        {
+          name: "High Fructose Corn Syrup (HFCS)",
+          code: "N/A",
+          risk: "high",
+          cat: "sweetener",
+          desc: "Highly processed sugar linked to obesity, insulin resistance, and non-alcoholic fatty liver disease. Found in sodas, baked goods, sauces.",
+          tags: ["Obesity", "Type 2 Diabetes", "Liver Damage"],
+          fda: "Permitted – FDA advises limiting added sugars to <10% daily calories",
+        },
+        {
+          name: "Trans Fat (Partially Hydrogenated Oil)",
+          code: "N/A",
+          risk: "high",
+          cat: "fat banned",
+          desc: "Artificial fat that raises LDL cholesterol and lowers HDL. FDA banned artificial trans fats in 2018 due to direct cardiac risk.",
+          tags: ["Heart Disease", "Stroke", "LDL Spike"],
+          fda: "BANNED by FDA (2018)",
+        },
+        {
+          name: "Sodium Nitrate / Nitrite",
+          code: "E250/E251",
+          risk: "high",
+          cat: "preservative",
+          desc: "Found in processed meats. Forms carcinogenic nitrosamines in the body. IARC classifies as Group 2A (probable carcinogen).",
+          tags: ["Carcinogen", "Colorectal Cancer", "DNA Damage"],
+          fda: "Permitted – IARC classifies as probable human carcinogen",
+        },
+        {
+          name: "BHA (Butylated Hydroxyanisole)",
+          code: "E320",
+          risk: "high",
+          cat: "preservative",
+          desc: 'Synthetic antioxidant preservative listed as a "reasonably anticipated human carcinogen" by the National Toxicology Program.',
+          tags: ["Carcinogen", "Endocrine Disruptor"],
+          fda: "GRAS status but under National Toxicology Program scrutiny",
+        },
+        {
+          name: "BHT (Butylated Hydroxytoluene)",
+          code: "E321",
+          risk: "high",
+          cat: "preservative",
+          desc: "Similar to BHA. Suspected carcinogen and endocrine disruptor. Banned in UK, Japan, and Australia; still permitted in the USA.",
+          tags: ["Carcinogen", "Banned in UK/Japan/Australia"],
+          fda: "Permitted in USA – banned in UK, Japan, Australia",
+        },
+        {
+          name: "Red Dye No. 3 (Erythrosine)",
+          code: "E127",
+          risk: "high",
+          cat: "color banned",
+          desc: "Artificial red food color linked to thyroid tumors in animal studies. FDA announced ban effective January 2025.",
+          tags: ["Thyroid Tumors", "Hormonal Disruption", "Banned 2025"],
+          fda: "BANNED by FDA (January 2025)",
+        },
+        {
+          name: "Yellow Dye No. 6 (Sunset Yellow)",
+          code: "E110",
+          risk: "high",
+          cat: "color",
+          desc: "Artificial color associated with hyperactivity in children and possible carcinogenicity. Requires warning labels in EU foods.",
+          tags: ["Hyperactivity", "ADHD", "Possible Carcinogen"],
+          fda: "Permitted in USA – EU requires warning label",
+        },
+        {
+          name: "Red Dye No. 40 (Allura Red)",
+          code: "E129",
+          risk: "medium",
+          cat: "color",
+          desc: "Most widely used food dye. The Southampton Six study linked it to hyperactivity in children, prompting EU warning labels.",
+          tags: ["Hyperactivity", "ADHD", "Behavioral Issues"],
+          fda: 'Permitted – EU requires "may have adverse effect on activity and attention in children" warning',
+        },
+        {
+          name: "Polysorbate 80",
+          code: "E433",
+          risk: "high",
+          cat: "emulsifier",
+          desc: "Emulsifier that damages intestinal mucus lining, promoting gut inflammation and dysbiosis. Associated with Crohn's disease risk in mouse models.",
+          tags: ["Gut Inflammation", "Microbiome Damage", "IBD Risk"],
+          fda: "GRAS – but concerns raised in multiple peer-reviewed studies",
+        },
+        {
+          name: "Carboxymethylcellulose (CMC)",
+          code: "E466",
+          risk: "high",
+          cat: "emulsifier",
+          desc: "Synthetic emulsifier shown in research to erode the intestinal protective mucus layer, promoting bacterial translocation and colitis.",
+          tags: ["Colitis", "Gut Barrier Damage", "Chronic Inflammation"],
+          fda: "GRAS – clinical research showing gut effects ongoing",
+        },
+        {
+          name: "Carrageenan",
+          code: "E407",
+          risk: "medium",
+          cat: "emulsifier",
+          desc: "Derived from red seaweed but processed form promotes intestinal inflammation. Linked to ulcerative colitis in animal and epidemiological studies.",
+          tags: ["Inflammation", "Gut Issues", "IBD"],
+          fda: "Permitted – IARC and NTP research ongoing",
+        },
+        {
+          name: "Sodium Benzoate",
+          code: "E211",
+          risk: "medium",
+          cat: "preservative",
+          desc: "Common preservative that reacts with Vitamin C to form benzene, a known carcinogen. Also linked to hyperactivity in children.",
+          tags: ["Benzene Formation", "Carcinogen", "Hyperactivity"],
+          fda: "Permitted – FDA notes potential benzene formation with ascorbic acid",
+        },
+        {
+          name: "Potassium Bromate",
+          code: "E924",
+          risk: "high",
+          cat: "preservative banned",
+          desc: "Flour bleaching agent classified as possible carcinogen (Group 2B by IARC). Banned in EU, Canada, UK; still permitted in the USA.",
+          tags: ["Carcinogen", "Kidney Damage", "Banned in EU/Canada"],
+          fda: "Permitted in USA – banned in EU, Canada, UK",
+        },
+        {
+          name: "Brominated Vegetable Oil (BVO)",
+          code: "N/A",
+          risk: "high",
+          cat: "additive banned",
+          desc: "FDA revoked GRAS status in 2024. Bromine accumulates in body tissues, potentially causing memory loss and neurological symptoms.",
+          tags: ["Organ Damage", "Neurotoxin", "Banned 2024"],
+          fda: "GRAS REVOKED by FDA (2024)",
+        },
+        {
+          name: "Monosodium Glutamate (MSG)",
+          code: "E621",
+          risk: "medium",
+          cat: "flavor",
+          desc: "Flavor enhancer. FDA considers safe, but some individuals report MSG symptom complex (headaches, flushing, sweating) after large doses.",
+          tags: ["Headaches", "Sensitivity", "MSG Symptom Complex"],
+          fda: "GRAS – some individuals experience sensitivity symptoms",
+        },
+        {
+          name: "Aspartame",
+          code: "E951",
+          risk: "medium",
+          cat: "sweetener",
+          desc: 'Artificial sweetener classified as "possibly carcinogenic to humans" (Group 2B) by WHO/IARC in 2023. Also disrupts gut microbiome.',
+          tags: ["Possible Carcinogen", "Gut Disruption", "Phenylketonuria"],
+          fda: "Permitted – WHO raised Group 2B carcinogen concern in 2023",
+        },
+        {
+          name: "Saccharin",
+          code: "E954",
+          risk: "medium",
+          cat: "sweetener",
+          desc: "Oldest artificial sweetener. Animal studies showed bladder cancer at high doses. Removed from carcinogen list in 2000 but long-term research continues.",
+          tags: ["Bladder Cancer History", "Gut Microbiome Disruption"],
+          fda: "Permitted – historical carcinogen concern in animal studies",
+        },
+        {
+          name: "Acesulfame Potassium (Ace-K)",
+          code: "E950",
+          risk: "medium",
+          cat: "sweetener",
+          desc: 'Artificial sweetener that may impair glucose tolerance and alter gut bacteria. Found ubiquitously in "sugar-free" and "diet" products.',
+          tags: ["Glucose Impairment", "Gut Disruption", "Metabolic Issues"],
+          fda: "Permitted – safety data from the 1970s considered outdated by some researchers",
+        },
+        {
+          name: "Titanium Dioxide",
+          code: "E171",
+          risk: "high",
+          cat: "color banned",
+          desc: "White food coloring. EFSA concluded it can no longer be considered safe in 2021 — may cause DNA damage. Banned in EU since 2022.",
+          tags: ["DNA Damage", "Possible Carcinogen", "Banned in EU"],
+          fda: "Permitted in USA – banned across the European Union since 2022",
+        },
+        {
+          name: "Sodium Diacetate",
+          code: "E262",
+          risk: "low",
+          cat: "preservative",
+          desc: "Antimicrobial preservative generally considered safe at approved levels. Can cause mild irritation in individuals with sensitivities.",
+          tags: ["Minor Irritant", "Generally Safe"],
+          fda: "GRAS",
+        },
+        {
+          name: "Propyl Gallate",
+          code: "E310",
+          risk: "medium",
+          cat: "preservative",
+          desc: "Antioxidant preservative used in fats and oils. Studies suggest it may act as an endocrine disruptor and may be carcinogenic.",
+          tags: ["Endocrine Disruptor", "Possible Carcinogen"],
+          fda: 'Permitted – classified as "reasonably anticipated carcinogen" by some studies',
+        },
+        {
+          name: "Soy Lecithin",
+          code: "E322",
+          risk: "low",
+          cat: "emulsifier",
+          desc: "Generally safe emulsifier. Some concerns about GMO soy exposure and residual hexane solvents used in processing. Mild allergy risk.",
+          tags: ["GMO Concern", "Mild Allergy Risk", "Solvent Residue"],
+          fda: "GRAS",
+        },
+        {
+          name: "Vanillin (Artificial Flavor)",
+          code: "—",
+          risk: "low",
+          cat: "flavor",
+          desc: "Synthetic vanilla flavor often derived from coal tar or paper pulp manufacturing waste. Safe at low levels but not natural vanilla.",
+          tags: ["Artificial Origin", "Minor Sensitivity"],
+          fda: "GRAS",
+        },
+        {
+          name: "Caramel Color IV",
+          code: "E150d",
+          risk: "medium",
+          cat: "color",
+          desc: "Dark soda coloring containing 4-methylimidazole (4-MEI), a compound classified as a possible carcinogen (Group 2B) by IARC.",
+          tags: ["4-MEI Carcinogen", "Dark Soda Concern"],
+          fda: "Permitted – California lists 4-MEI as Prop 65 carcinogen",
+        },
+        {
+          name: "TBHQ (tert-Butylhydroquinone)",
+          code: "E319",
+          risk: "high",
+          cat: "preservative",
+          desc: "Petroleum-derived preservative. High doses in animal studies caused vision disturbances, liver enlargement, and tumor growth.",
+          tags: ["Liver Damage", "Tumor Growth", "Vision Issues"],
+          fda: "Permitted – FDA limits to 0.02% of fats/oils content",
+        },
+        {
+          name: "Potassium Sorbate",
+          code: "E202",
+          risk: "low",
+          cat: "preservative",
+          desc: "Common mold inhibitor widely regarded as safe. Some reports of skin irritation and mild allergic reactions in sensitive individuals.",
+          tags: ["Mild Allergy Risk", "Generally Safe"],
+          fda: "GRAS",
+        },
+        {
+          name: "Calcium Propionate",
+          code: "E282",
+          risk: "low",
+          cat: "preservative",
+          desc: "Mold inhibitor used in bread. Some research associates it with migraines and behavioral changes in children at higher intake levels.",
+          tags: ["Migraines", "Behavioral Issues (Children)"],
+          fda: "GRAS – some pediatric behavioral research ongoing",
+        },
+        {
+          name: "Sucralose",
+          code: "E955",
+          risk: "medium",
+          cat: "sweetener",
+          desc: "Appears heat-stable but breaks down at high temperatures into chloropropanols — potentially toxic compounds. Also disrupts gut bacteria.",
+          tags: [
+            "High-Temp Toxins",
+            "Gut Disruption",
+            "Metabolic Interference",
+          ],
+          fda: "Permitted – heat stability concerns noted in recent research",
+        },
+      ];
+
+      const totalCount = additives.length;
+      const highCount = additives.filter((a) => a.risk === "high").length;
+      const mediumCount = additives.filter((a) => a.risk === "medium").length;
+      const bannedCount = additives.filter((a) =>
+        a.cat.includes("banned"),
+      ).length;
+
+      document.getElementById("stat-total").textContent = totalCount;
+      document.getElementById("stat-high").textContent = highCount;
+      document.getElementById("stat-medium").textContent = mediumCount;
+      document.getElementById("stat-banned").textContent = bannedCount;
+      document.getElementById("all-filter-btn").textContent =
+        `🔘 All (${totalCount})`;
+
+      let activeFilter = "all";
+
+      function renderList() {
+        const q = document
+          .getElementById("search-input")
+          .value.toLowerCase()
+          .trim();
+        const filtered = additives.filter((a) => {
+          const matchQ =
+            !q ||
+            a.name.toLowerCase().includes(q) ||
+            a.code.toLowerCase().includes(q);
+          const matchF =
+            activeFilter === "all" ||
+            a.cat.includes(activeFilter) ||
+            a.risk === activeFilter;
+          return matchQ && matchF;
+        });
+
+        document.getElementById("res-count").textContent =
+          `Showing ${filtered.length} additive${filtered.length !== 1 ? "s" : ""}`;
+
+        if (!filtered.length) {
+          document.getElementById("additives-list").innerHTML =
+            `<div style="text-align:center;padding:60px 20px;color:var(--text-muted);"><div style="font-size:3rem;margin-bottom:12px;">🔍</div><p>No additives match your search.</p></div>`;
+          return;
+        }
+
+        const rIcon = { high: "❌", medium: "⚠️", low: "🟡" };
+        const fdaBadge = (f) => {
+          if (!f) return "";
+          if (f.includes("BANNED") || f.includes("REVOKED"))
+            return `<span class="badge badge-danger" style="font-size:0.72rem;">${f.split("–")[0].trim()}</span>`;
+          if (f.includes("GRAS"))
+            return `<span class="badge badge-safe" style="font-size:0.72rem;">GRAS</span>`;
+          return `<span class="badge badge-warn" style="font-size:0.72rem;">${f.substring(0, 24)}…</span>`;
+        };
+
+        document.getElementById("additives-list").innerHTML = filtered
+          .map(
+            (a) => `
+      <div class="additive-item">
+        <div class="additive-dot ${a.risk}"></div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px;">
+            <h4>${a.name}</h4>
+          </div>
+          <div class="additive-code">${a.code !== "N/A" ? "E-Code: " + a.code : ""} ${a.code !== "N/A" ? "·" : ""} Category: ${a.cat.split(" ")[0].charAt(0).toUpperCase() + a.cat.split(" ")[0].slice(1)}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
+            <span class="badge ${a.risk === "high" ? "badge-danger" : a.risk === "medium" ? "badge-warn" : "badge-info"}">${rIcon[a.risk]} ${a.risk} risk</span>
+            ${fdaBadge(a.fda)}
+          </div>
+          <p class="additive-desc">${a.desc}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;">
+            ${a.tags.map((t) => `<span style="padding:4px 12px;border-radius:50px;font-size:0.75rem;font-weight:600;background:var(--bg-alt);color:var(--text-muted);">${t}</span>`).join("")}
+          </div>
+        </div>
+      </div>`,
+          )
+          .join("");
+      }
+
+      function setFilter(btn, f) {
+        document
+          .querySelectorAll(".fpill")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeFilter = f;
+        renderList();
+      }
+
+      renderList();
+    </script>
+  </body>
+</html>

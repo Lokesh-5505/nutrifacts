@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analysis Results – NutriFacts</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="page-wrap">
+      <div class="page-banner" id="results-banner">
+        <div class="eyebrow">Analysis Complete</div>
+        <h1>Your Food Report</h1>
+        <p>AI-powered ingredient safety analysis results</p>
+      </div>
+
+      <section class="section">
+        <div class="container">
+          <!-- No result state -->
+          <div
+            id="no-result"
+            style="display: none; text-align: center; padding: 80px 20px"
+          >
+            <div style="font-size: 5rem; margin-bottom: 20px">🔍</div>
+            <h2
+              style="
+                font-family: &quot;Fraunces&quot;, serif;
+                font-size: 2.2rem;
+                color: var(--text-primary);
+                margin-bottom: 14px;
+              "
+            >
+              No Analysis Yet
+            </h2>
+            <p
+              style="
+                color: var(--text-muted);
+                margin-bottom: 36px;
+                font-size: 1.05rem;
+              "
+            >
+              Scan a product first to see your results here.
+            </p>
+            <a href="scan.html" class="btn btn-primary btn-lg"
+              >📷 Go to Scanner</a
+            >
+          </div>
+
+          <div id="result-content" style="display: none">
+            <!-- Verdict Banner -->
+            <div class="verdict-wrap" id="verdict-wrap">
+              <div>
+                <div class="verdict-name" id="verdict-product-name"></div>
+                <div
+                  style="
+                    display: flex;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                    align-items: center;
+                  "
+                >
+                  <div class="verdict-pill" id="verdict-pill"></div>
+                  <span id="verdict-extra-badge"></span>
+                </div>
+              </div>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap">
+                <a
+                  href="harmful-explanation.html"
+                  class="btn btn-sm btn-outline-green"
+                  >☣️ Ingredient Details</a
+                >
+                <a href="alternatives.html" class="btn btn-sm btn-primary"
+                  >🥗 Healthier Options</a
+                >
+              </div>
+            </div>
+
+            <!-- Main Results Grid -->
+            <div class="results-layout">
+              <!-- Sidebar -->
+              <div class="results-col-l">
+                <!-- Gauge -->
+                <div class="card" style="padding: 0">
+                  <div style="padding: 28px 20px 0; text-align: center">
+                    <div
+                      style="
+                        font-family: &quot;Fraunces&quot;, serif;
+                        font-size: 1rem;
+                        font-weight: 700;
+                        color: var(--text-primary);
+                        margin-bottom: 4px;
+                      "
+                    >
+                      Health Score
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted)">
+                      Based on ingredients & nutrition
+                    </div>
+                  </div>
+                  <div class="gauge-outer">
+                    <div class="gauge-ring-wrap">
+                      <svg viewBox="0 0 180 180">
+                        <circle class="g-track" cx="90" cy="90" r="72" />
+                        <circle
+                          class="g-fill"
+                          id="g-fill"
+                          cx="90"
+                          cy="90"
+                          r="72"
+                          stroke-dasharray="452.4"
+                          stroke-dashoffset="452.4"
+                        />
+                      </svg>
+                      <div class="gauge-center-abs">
+                        <div class="g-score-num" id="gauge-num">0</div>
+                        <div class="g-score-lbl" id="gauge-lbl">—</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="card">
+                  <div
+                    style="
+                      font-family: &quot;Fraunces&quot;, serif;
+                      font-size: 1rem;
+                      font-weight: 700;
+                      color: var(--text-primary);
+                      margin-bottom: 18px;
+                    "
+                  >
+                    📌 Quick Stats
+                  </div>
+                  <div id="quick-stats"></div>
+                </div>
+
+                <!-- Child Safety -->
+                <div class="cs-card" id="cs-card">
+                  <div class="cs-card-head">
+                    <span style="font-size: 1.8rem">👶</span>
+                    <h3>Child Safety</h3>
+                  </div>
+                  <div id="cs-content"></div>
+                </div>
+              </div>
+
+              <!-- Main column -->
+              <div class="results-col-r">
+                <!-- Nutrition -->
+                <div class="card">
+                  <div
+                    style="
+                      font-family: &quot;Fraunces&quot;, serif;
+                      font-size: 1.1rem;
+                      font-weight: 700;
+                      color: var(--text-primary);
+                      margin-bottom: 22px;
+                    "
+                  >
+                    🥗 Nutrition Overview
+                  </div>
+                  <div id="nut-bars"></div>
+                  <div
+                    id="calorie-note"
+                    style="
+                      margin-top: 16px;
+                      font-size: 0.85rem;
+                      color: var(--text-muted);
+                      background: var(--cream);
+                      padding: 12px 16px;
+                      border-radius: var(--r-sm);
+                      line-height: 1.6;
+                    "
+                  ></div>
+                </div>
+
+                <!-- Harmful -->
+                <div class="card" id="harmful-card">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+                      margin-bottom: 8px;
+                      flex-wrap: wrap;
+                      gap: 10px;
+                    "
+                  >
+                    <div
+                      style="
+                        font-family: &quot;Fraunces&quot;, serif;
+                        font-size: 1.1rem;
+                        font-weight: 700;
+                        color: var(--text-primary);
+                      "
+                    >
+                      ⚠️ Harmful Ingredients
+                    </div>
+                    <span id="harmful-count-badge"></span>
+                  </div>
+                  <p
+                    style="
+                      font-size: 0.85rem;
+                      color: var(--text-muted);
+                      margin-bottom: 20px;
+                    "
+                  >
+                    Cross-referenced with FDA safety database
+                  </p>
+                  <div id="harmful-rows"></div>
+                </div>
+
+                <!-- Safe -->
+                <div class="card">
+                  <div
+                    style="
+                      font-family: &quot;Fraunces&quot;, serif;
+                      font-size: 1.1rem;
+                      font-weight: 700;
+                      color: var(--text-primary);
+                      margin-bottom: 18px;
+                    "
+                  >
+                    ✅ Safe Ingredients
+                  </div>
+                  <div
+                    id="safe-tags"
+                    style="display: flex; flex-wrap: wrap; gap: 8px"
+                  ></div>
+                </div>
+
+                <!-- AI Summary -->
+                <div
+                  class="card"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      var(--cream),
+                      var(--ivory)
+                    );
+                    border-color: var(--foam);
+                  "
+                >
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 12px;
+                      margin-bottom: 18px;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 44px;
+                        height: 44px;
+                        border-radius: 12px;
+                        background: linear-gradient(
+                          135deg,
+                          var(--forest-mid),
+                          var(--forest-soft)
+                        );
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 1.3rem;
+                      "
+                    >
+                      🤖
+                    </div>
+                    <div>
+                      <div
+                        style="
+                          font-family: &quot;Fraunces&quot;, serif;
+                          font-weight: 700;
+                          color: var(--text-primary);
+                        "
+                      >
+                        AI Summary
+                      </div>
+                      <div style="font-size: 0.78rem; color: var(--text-muted)">
+                        Powered by Claude AI
+                      </div>
+                    </div>
+                  </div>
+                  <p
+                    id="ai-summary"
+                    style="
+                      color: var(--text-body);
+                      line-height: 1.8;
+                      font-size: 0.95rem;
+                    "
+                  ></p>
+                  <div
+                    style="
+                      margin-top: 18px;
+                      padding-top: 18px;
+                      border-top: 1px solid rgba(197, 235, 213, 0.5);
+                    "
+                  >
+                    <div
+                      style="
+                        font-size: 0.78rem;
+                        font-weight: 700;
+                        color: var(--text-muted);
+                        text-transform: uppercase;
+                        letter-spacing: 0.06em;
+                        margin-bottom: 8px;
+                      "
+                    >
+                      Serving Advice
+                    </div>
+                    <p
+                      id="serving-advice"
+                      style="
+                        font-size: 0.9rem;
+                        color: var(--text-muted);
+                        line-height: 1.65;
+                      "
+                    ></p>
+                  </div>
+                </div>
+
+                <!-- Navigation cards -->
+                <div class="cards-grid-2">
+                  <a
+                    href="harmful-explanation.html"
+                    class="feat-card"
+                    style="text-align: center; cursor: pointer"
+                  >
+                    <div style="font-size: 2.5rem; margin-bottom: 14px">☣️</div>
+                    <h3>Ingredient Explanations</h3>
+                    <p>
+                      Detailed science-backed explanations of each harmful
+                      additive found.
+                    </p>
+                  </a>
+                  <a
+                    href="ai-diet.html"
+                    class="feat-card"
+                    style="text-align: center; cursor: pointer"
+                  >
+                    <div style="font-size: 2.5rem; margin-bottom: 14px">🥦</div>
+                    <h3>AI Diet Tips</h3>
+                    <p>
+                      Get personalized nutrition recommendations from our AI
+                      assistant.
+                    </p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+      injectNavbar("results.html");
+      injectFooter();
+
+      const r = loadResult();
+      if (!r) {
+        document.getElementById("no-result").style.display = "block";
+      } else {
+        document.getElementById("result-content").style.display = "block";
+        const score = Number.isFinite(Number(r.healthScore))
+          ? Math.max(0, Math.min(100, Number(r.healthScore)))
+          : 50;
+        const lvl = ["safe", "moderate", "risky"].includes(r.riskLevel)
+          ? r.riskLevel
+          : "moderate";
+        const esc = escapeHTML;
+
+        const nutritionLevels = {
+          sugar: ["low", "moderate", "high"].includes(r.nutrition?.sugarLevel)
+            ? r.nutrition.sugarLevel
+            : "moderate",
+          fat: ["low", "moderate", "high"].includes(r.nutrition?.fatLevel)
+            ? r.nutrition.fatLevel
+            : "moderate",
+          sodium: ["low", "moderate", "high"].includes(r.nutrition?.sodiumLevel)
+            ? r.nutrition.sodiumLevel
+            : "moderate",
+        };
+
+        // Banner color
+        const bannerGrads = {
+          safe: "linear-gradient(135deg,#052e16,#166534)",
+          moderate: "linear-gradient(135deg,#431407,#92400e)",
+          risky: "linear-gradient(135deg,#450a0a,#991b1b)",
+        };
+        document.getElementById("results-banner").style.background =
+          bannerGrads[lvl] || bannerGrads.moderate;
+
+        // Verdict
+        document.getElementById("verdict-wrap").className =
+          `verdict-wrap ${lvl}`;
+        document.getElementById("verdict-product-name").textContent =
+          r.productName || "Scanned Product";
+        const pillColors = {
+          safe: "safe",
+          moderate: "moderate",
+          risky: "risky",
+        };
+        document.getElementById("verdict-pill").className =
+          `verdict-pill ${pillColors[lvl]}`;
+        document.getElementById("verdict-pill").textContent =
+          r.overallVerdict || scoreLabel(score);
+        document.getElementById("verdict-extra-badge").innerHTML =
+          `<span class="badge ${scoreBadgeClass(score)}">${score}/100</span>`;
+
+        // Gauge
+        const circ = 452.4;
+        const offset = circ - (score / 100) * circ;
+        const gFill = document.getElementById("g-fill");
+        gFill.className = `g-fill ${scoreLevel(score)}`;
+        setTimeout(() => {
+          gFill.style.strokeDashoffset = offset;
+        }, 300);
+        setTimeout(
+          () => animateCount(document.getElementById("gauge-num"), score, 1500),
+          300,
+        );
+        document.getElementById("gauge-lbl").textContent =
+          lvl === "safe"
+            ? "✅ Safe"
+            : lvl === "moderate"
+              ? "⚠️ Moderate"
+              : "❌ Risky";
+
+        // Quick stats
+        const harmful = r.harmfulIngredients || [];
+        const safe = r.safeIngredients || [];
+        document.getElementById("quick-stats").innerHTML = [
+          [
+            "Harmful Found",
+            `<span class="badge badge-danger">${harmful.length}</span>`,
+          ],
+          [
+            "Safe Ingredients",
+            `<span class="badge badge-safe">${safe.length}</span>`,
+          ],
+          [
+            "Sugar Level",
+            `<span class="badge ${nutritionLevels.sugar === "high" ? "badge-danger" : nutritionLevels.sugar === "moderate" ? "badge-warn" : "badge-safe"}">${esc(nutritionLevels.sugar)}</span>`,
+          ],
+          [
+            "Fat Level",
+            `<span class="badge ${nutritionLevels.fat === "high" ? "badge-danger" : nutritionLevels.fat === "moderate" ? "badge-warn" : "badge-safe"}">${esc(nutritionLevels.fat)}</span>`,
+          ],
+          [
+            "Sodium Level",
+            `<span class="badge ${nutritionLevels.sodium === "high" ? "badge-danger" : nutritionLevels.sodium === "moderate" ? "badge-warn" : "badge-safe"}">${esc(nutritionLevels.sodium)}</span>`,
+          ],
+        ]
+          .map(
+            ([n, v]) => `
+      <div class="ing-row">
+        <div class="ing-name">${n}</div>
+        <div>${v}</div>
+      </div>`,
+          )
+          .join("");
+
+        // Nutrition bars
+        const lvMap = { low: 22, moderate: 55, high: 88 };
+        const barCls = (l) =>
+          l === "high" ? "high" : l === "moderate" ? "medium" : "low";
+        document.getElementById("nut-bars").innerHTML = [
+          "sugar",
+          "fat",
+          "sodium",
+        ]
+          .map((n) => {
+            const level = nutritionLevels[n];
+            const val = lvMap[level] || 50;
+            return `<div class="nut-bar">
+        <div class="nut-bar-top">
+          <span class="nut-bar-name" style="text-transform:capitalize;">${n}</span>
+          <span class="nut-bar-val">${esc(level)}</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill ${barCls(level)}" style="width:0" data-w="${val}%"></div>
+        </div>
+      </div>`;
+          })
+          .join("");
+        document.getElementById("calorie-note").textContent =
+          "📌 " +
+          (r.nutrition?.calorieNote || "Monitor your portion sizes carefully.");
+        setTimeout(() => {
+          document
+            .querySelectorAll(".bar-fill[data-w]")
+            .forEach((b) => (b.style.width = b.dataset.w));
+        }, 350);
+
+        // Harmful rows
+        const sIcon = { high: "❌", medium: "⚠️", low: "🟡" };
+        document.getElementById("harmful-count-badge").innerHTML =
+          `<span class="badge ${harmful.length > 0 ? "badge-danger" : "badge-safe"}">${harmful.length} found</span>`;
+        if (harmful.length === 0) {
+          document.getElementById("harmful-card").innerHTML =
+            `<div style="text-align:center;padding:32px;">
+        <div style="font-size:3rem;margin-bottom:14px;">✅</div>
+        <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:800;color:var(--safe);">No Harmful Ingredients Found!</div>
+        <p style="color:var(--text-muted);margin-top:8px;">Great news — this product looks relatively clean.</p>
+      </div>`;
+        } else {
+          document.getElementById("harmful-rows").innerHTML = harmful
+            .map(
+              (h) => `
+        <div class="ing-row">
+          <div style="flex:1;">
+            <div class="ing-name">${sIcon[h.severity] || "⚠️"} ${esc(h.name)}</div>
+            <div class="ing-sub">${esc(h.reason)}</div>
+            ${h.fdaNote ? `<div class="ing-fda">🇺🇸 ${esc(h.fdaNote)}</div>` : ""}
+          </div>
+          <span class="badge ${h.severity === "high" ? "badge-danger" : h.severity === "medium" ? "badge-warn" : "badge-info"}" style="flex-shrink:0;">${esc(h.severity || "medium")}</span>
+        </div>`,
+            )
+            .join("");
+        }
+
+        // Safe tags
+        document.getElementById("safe-tags").innerHTML = safe.length
+          ? safe
+              .map((s) => `<span class="badge badge-safe">✅ ${esc(s)}</span>`)
+              .join("")
+          : '<span style="color:var(--text-muted);font-size:0.88rem;">None specifically identified</span>';
+
+        // AI summary
+        document.getElementById("ai-summary").textContent = r.summary || "";
+        document.getElementById("serving-advice").textContent =
+          r.servingAdvice || "";
+
+        // Child safety
+        const cs = r.childSafety || {};
+        const csStatus = ["safe", "caution", "unsafe"].includes(cs.status)
+          ? cs.status
+          : "caution";
+        const csI = { safe: "✅", caution: "⚠️", unsafe: "❌" };
+        const csC = {
+          safe: "#166534",
+          caution: "#92400e",
+          unsafe: "var(--danger)",
+        };
+        document.getElementById("cs-content").innerHTML = `
+      <div class="cs-item">
+        <div class="cs-item-icon">${csI[csStatus] || "⚠️"}</div>
+        <div class="cs-item-text"><strong style="color:${csC[csStatus] || "#92400e"}">Status: ${esc(csStatus.toUpperCase())}</strong><br>${esc(cs.reason)}</div>
+      </div>
+      ${cs.ageWarning ? `<div class="cs-item"><div class="cs-item-icon">📋</div><div class="cs-item-text">${esc(cs.ageWarning)}</div></div>` : ""}
+    `;
+      }
+    </script>
+  </body>
+</html>

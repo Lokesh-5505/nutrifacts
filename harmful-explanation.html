@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ingredient Explanations – NutriFacts</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="page-wrap">
+      <div
+        class="page-banner"
+        style="background: linear-gradient(135deg, #3b0a0a, #991b1b)"
+      >
+        <div class="eyebrow">Detailed Analysis</div>
+        <h1>Harmful Ingredient<br />Explanations</h1>
+        <p>
+          Science-backed explanations of each risky additive detected in your
+          scanned product.
+        </p>
+      </div>
+
+      <section class="section">
+        <div class="container">
+          <div
+            id="no-result"
+            style="display: none; text-align: center; padding: 80px 20px"
+          >
+            <div style="font-size: 5rem; margin-bottom: 20px">🔍</div>
+            <h2
+              style="
+                font-family: &quot;Fraunces&quot;, serif;
+                font-size: 2rem;
+                color: var(--text-primary);
+                margin-bottom: 14px;
+              "
+            >
+              No Scan Data Found
+            </h2>
+            <p style="color: var(--text-muted); margin-bottom: 36px">
+              Scan a product first to see ingredient explanations.
+            </p>
+            <a href="scan.html" class="btn btn-primary">📷 Scan a Product</a>
+          </div>
+
+          <div id="exp-content" style="display: none">
+            <!-- Header row -->
+            <div
+              style="
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 18px;
+                margin-bottom: 40px;
+              "
+            >
+              <div>
+                <div
+                  style="
+                    font-size: 0.78rem;
+                    font-weight: 700;
+                    color: var(--text-muted);
+                    letter-spacing: 0.08em;
+                    text-transform: uppercase;
+                    margin-bottom: 8px;
+                  "
+                >
+                  Scanned Product
+                </div>
+                <h2
+                  id="exp-product"
+                  style="
+                    font-family: &quot;Fraunces&quot;, serif;
+                    font-size: 2rem;
+                    font-weight: 800;
+                    color: var(--text-primary);
+                    letter-spacing: -0.02em;
+                  "
+                ></h2>
+                <p style="color: var(--text-muted); margin-top: 6px">
+                  Found
+                  <span
+                    id="exp-count"
+                    style="color: var(--danger); font-weight: 700"
+                  ></span>
+                  harmful ingredient(s)
+                </p>
+              </div>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap">
+                <a href="results.html" class="btn btn-sm btn-outline-green"
+                  >← Back to Results</a
+                >
+                <a href="harmful-list.html" class="btn btn-sm btn-forest"
+                  >Full Database</a
+                >
+              </div>
+            </div>
+
+            <!-- Accordions -->
+            <div id="exp-accordions"></div>
+
+            <!-- Long-term impacts -->
+            <div style="margin-top: 60px">
+              <div class="sec-header reveal">
+                <div class="sec-eyebrow">Long-Term Health Science</div>
+                <h2>What happens to your body<br /><em>over time</em></h2>
+              </div>
+              <div class="cards-grid-4 stagger">
+                <div
+                  class="feat-card reveal"
+                  style="border-top: 3px solid var(--danger)"
+                >
+                  <div style="font-size: 2.2rem; margin-bottom: 14px">🦠</div>
+                  <h3>Gut Microbiome Damage</h3>
+                  <p>
+                    Emulsifiers like Polysorbate 80 erode the intestinal mucus
+                    layer, promoting inflammation and dysbiosis — the root of
+                    many chronic diseases.
+                  </p>
+                </div>
+                <div
+                  class="feat-card reveal"
+                  style="border-top: 3px solid var(--warn)"
+                >
+                  <div style="font-size: 2.2rem; margin-bottom: 14px">🧠</div>
+                  <h3>Neurological Effects</h3>
+                  <p>
+                    Artificial colors (Red 40, Yellow 5) and sodium benzoate are
+                    associated with hyperactivity, ADHD, and behavioral changes,
+                    especially in children.
+                  </p>
+                </div>
+                <div
+                  class="feat-card reveal"
+                  style="border-top: 3px solid var(--danger)"
+                >
+                  <div style="font-size: 2.2rem; margin-bottom: 14px">🩺</div>
+                  <h3>Cancer Risk</h3>
+                  <p>
+                    BHA, BHT, sodium nitrate, and caramel color IV are
+                    classified as possible or probable carcinogens by major
+                    international health organizations.
+                  </p>
+                </div>
+                <div
+                  class="feat-card reveal"
+                  style="border-top: 3px solid var(--warn)"
+                >
+                  <div style="font-size: 2.2rem; margin-bottom: 14px">⚖️</div>
+                  <h3>Metabolic Disorders</h3>
+                  <p>
+                    High fructose corn syrup impairs insulin sensitivity and
+                    liver function, contributing to metabolic syndrome and type
+                    2 diabetes.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FDA Actions table -->
+            <div style="margin-top: 60px" class="reveal">
+              <div class="sec-header">
+                <div class="sec-eyebrow">Regulatory Actions</div>
+                <h2>🇺🇸 Recent FDA Actions</h2>
+              </div>
+              <div class="card" style="padding: 0; overflow: hidden">
+                <div style="padding: 0">
+                  <div
+                    class="ing-row"
+                    style="
+                      border-bottom: 2px solid var(--bg-alt);
+                      padding: 16px 24px;
+                    "
+                  >
+                    <div
+                      style="
+                        font-weight: 700;
+                        font-size: 0.78rem;
+                        color: var(--text-faint);
+                        text-transform: uppercase;
+                        letter-spacing: 0.08em;
+                      "
+                    >
+                      Ingredient
+                    </div>
+                    <div
+                      style="
+                        font-weight: 700;
+                        font-size: 0.78rem;
+                        color: var(--text-faint);
+                        text-transform: uppercase;
+                        letter-spacing: 0.08em;
+                      "
+                    >
+                      Status
+                    </div>
+                  </div>
+                  ${[ ['Trans Fats (Partially Hydrogenated Oils)','BANNED
+                  (2018)','Cardiovascular risk. FDA banned artificial trans
+                  fats.','badge-danger'], ['Red Dye No. 3 (Erythrosine)','BANNED
+                  (Jan 2025)','Linked to thyroid tumors in animal
+                  studies.','badge-danger'], ['Brominated Vegetable Oil
+                  (BVO)','REVOKED (2024)','FDA revoked GRAS status — accumulates
+                  in tissues.','badge-danger'], ['Potassium Bromate','BANNED in
+                  EU/Canada','Possible carcinogen. Still permitted in
+                  USA.','badge-warn'], ['Caramel Color IV','Under
+                  Review','Contains 4-MEI, classified as possible
+                  carcinogen.','badge-warn'], ['High Fructose Corn
+                  Syrup','Monitored','Permitted but FDA advises limiting to <10%
+                  daily calories.','badge-info'], ].map(([name,status,note,cls])
+                  => `
+                  <div
+                    class="ing-row"
+                    style="padding: 18px 24px; flex-wrap: wrap; gap: 8px"
+                  >
+                    <div style="flex: 1; min-width: 200px">
+                      <div class="ing-name">${name}</div>
+                      <div class="ing-sub">${note}</div>
+                    </div>
+                    <span class="badge ${cls}">${status}</span>
+                  </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+      injectNavbar("harmful-explanation.html");
+      injectFooter();
+
+      const r = loadResult();
+      if (!r || !r.harmfulIngredients) {
+        document.getElementById("no-result").style.display = "block";
+      } else {
+        document.getElementById("exp-content").style.display = "block";
+        document.getElementById("exp-product").textContent =
+          r.productName || "Scanned Product";
+        const esc = escapeHTML;
+        const harmful = r.harmfulIngredients || [];
+        document.getElementById("exp-count").textContent = harmful.length;
+
+        const sIcon = { high: "❌", medium: "⚠️", low: "🟡" };
+        const sLbl = {
+          high: "High Risk",
+          medium: "Medium Risk",
+          low: "Low Risk",
+        };
+        const sBadge = {
+          high: "badge-danger",
+          medium: "badge-warn",
+          low: "badge-info",
+        };
+        const sBg = {
+          high: "var(--danger-bg)",
+          medium: "var(--warn-bg)",
+          low: "var(--safe-bg)",
+        };
+
+        if (harmful.length === 0) {
+          document.getElementById("exp-accordions").innerHTML = `
+        <div style="text-align:center;padding:48px;background:var(--safe-bg);border-radius:var(--r-lg);border:1px solid var(--safe-border);">
+          <div style="font-size:3.5rem;margin-bottom:16px;">✅</div>
+          <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:800;color:var(--safe);">No Harmful Ingredients!</div>
+          <p style="color:var(--text-muted);margin-top:8px;">This product doesn't contain commonly flagged harmful additives.</p>
+        </div>`;
+        } else {
+          document.getElementById("exp-accordions").innerHTML = harmful
+            .map(
+              (h, i) => `
+        <div class="accordion-item" id="acc-${i}" style="border-left:4px solid ${h.severity === "high" ? "var(--danger)" : h.severity === "medium" ? "var(--warn)" : "var(--safe)"};">
+          <div class="accordion-head" onclick="toggleAcc('acc-${i}')">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <span style="font-size:1.4rem;">${sIcon[h.severity] || "⚠️"}</span>
+              <span class="accordion-title">${esc(h.name)}</span>
+              <span class="badge ${sBadge[h.severity]}">${sLbl[h.severity]}</span>
+            </div>
+            <span class="accordion-arrow">▼</span>
+          </div>
+          <div class="accordion-body">
+            <div style="background:${sBg[h.severity]};border-radius:var(--r-sm);padding:18px;margin-bottom:16px;">
+              <div style="font-size:0.78rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Why It's Harmful</div>
+              <p style="font-size:0.92rem;line-height:1.75;color:var(--text-body);">${esc(h.reason)}</p>
+            </div>
+            ${
+              h.fdaNote
+                ? `
+            <div style="display:flex;gap:12px;padding:14px 18px;background:var(--info-bg);border-radius:var(--r-sm);margin-bottom:16px;">
+              <span style="font-size:1.3rem;">🇺🇸</span>
+              <div>
+                <div style="font-weight:700;font-size:0.82rem;color:var(--info);margin-bottom:4px;">FDA Regulatory Note</div>
+                <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.65;">${esc(h.fdaNote)}</p>
+              </div>
+            </div>`
+                : ""
+            }
+            <div>
+              <div style="font-size:0.78rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Potential Health Effects</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                ${getEffects(h.severity)
+                  .map(
+                    (e) =>
+                      `<span style="padding:5px 14px;border-radius:50px;font-size:0.78rem;font-weight:600;background:var(--danger-bg);color:var(--danger);border:1px solid var(--danger-border);">${e}</span>`,
+                  )
+                  .join("")}
+              </div>
+            </div>
+          </div>
+        </div>`,
+            )
+            .join("");
+          // Open first
+          setTimeout(() => toggleAcc("acc-0"), 100);
+        }
+      }
+
+      function toggleAcc(id) {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle("open");
+      }
+      function getEffects(sev) {
+        const m = {
+          high: [
+            "Organ Damage",
+            "Carcinogenic Risk",
+            "Hormonal Disruption",
+            "Chronic Inflammation",
+          ],
+          medium: [
+            "Gut Dysbiosis",
+            "Allergic Reactions",
+            "Metabolic Disruption",
+          ],
+          low: ["Minor Sensitivity", "Mild Allergy Risk"],
+        };
+        return m[sev] || m.medium;
+      }
+    </script>
+  </body>
+</html>

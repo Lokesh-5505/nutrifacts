@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Healthy Alternatives – NutriFacts</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="page-wrap">
+      <div class="page-banner">
+        <div class="eyebrow">Better Choices</div>
+        <h1>Healthy Alternatives</h1>
+        <p>
+          Discover smarter, cleaner swaps for your favourite packaged foods and
+          harmful ingredients.
+        </p>
+      </div>
+
+      <section class="section">
+        <div class="container">
+          <!-- ═══ SCAN-BASED COMPARE ═══ -->
+          <div style="margin-bottom: 64px">
+            <div class="sec-header reveal">
+              <div class="sec-eyebrow">Your Last Scan</div>
+              <h2>
+                Alternatives for <em id="alt-product-name">Your Product</em>
+              </h2>
+            </div>
+            <div id="scan-alt-content">
+              <div
+                style="
+                  background: var(--surface);
+                  border-radius: var(--r-lg);
+                  padding: 48px;
+                  text-align: center;
+                  border: 1.5px dashed rgba(197, 235, 213, 0.7);
+                "
+              >
+                <div style="font-size: 3.5rem; margin-bottom: 16px">📷</div>
+                <p
+                  style="
+                    color: var(--text-muted);
+                    font-size: 1rem;
+                    margin-bottom: 24px;
+                  "
+                >
+                  Scan a product first to get personalised healthier
+                  alternatives.
+                </p>
+                <a href="scan.html" class="btn btn-primary">Go to Scanner</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ INGREDIENT SWAPS (rendered by JS below) ═══ -->
+          <div style="margin-bottom: 64px">
+            <div class="sec-header reveal">
+              <div class="sec-eyebrow">Ingredient Substitutions</div>
+              <h2>Smart ingredient<br /><em>swaps to make</em></h2>
+              <p>
+                Replace these common harmful ingredients with cleaner, healthier
+                alternatives you can find in any store.
+              </p>
+            </div>
+            <div
+              id="swap-cards"
+              style="display: flex; flex-direction: column; gap: 14px"
+            ></div>
+          </div>
+
+          <!-- ═══ CATEGORY CARDS — written as plain static HTML ═══ -->
+          <div style="margin-bottom: 64px">
+            <div class="sec-header reveal">
+              <div class="sec-eyebrow">By Snack Category</div>
+              <h2>Better alternatives<br /><em>by food type</em></h2>
+            </div>
+            <div class="cards-grid-3 stagger">
+              <!-- Cookies -->
+              <div
+                class="feat-card reveal"
+                style="border-top: 3px solid var(--safe)"
+              >
+                <div style="font-size: 2rem; margin-bottom: 14px">🍪</div>
+                <h3>Instead of Cookies</h3>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    margin-top: 14px;
+                  "
+                >
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Homemade oat &amp;
+                    banana cookies
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Dark chocolate (70%+
+                    cocoa)
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Rice cakes with nut
+                    butter
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Medjool dates +
+                    almonds
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sodas -->
+              <div
+                class="feat-card reveal"
+                style="border-top: 3px solid var(--safe)"
+              >
+                <div style="font-size: 2rem; margin-bottom: 14px">🥤</div>
+                <h3>Instead of Sodas</h3>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    margin-top: 14px;
+                  "
+                >
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Sparkling water with
+                    lemon
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Kombucha (low sugar)
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Coconut water
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Cold-pressed juice
+                    (no added sugar)
+                  </div>
+                </div>
+              </div>
+
+              <!-- Chips -->
+              <div
+                class="feat-card reveal"
+                style="border-top: 3px solid var(--safe)"
+              >
+                <div style="font-size: 2rem; margin-bottom: 14px">🥔</div>
+                <h3>Instead of Chips</h3>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    margin-top: 14px;
+                  "
+                >
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Baked kale chips
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Air-popped popcorn
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Roasted chickpeas
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Veggie sticks +
+                    hummus
+                  </div>
+                </div>
+              </div>
+
+              <!-- Candy -->
+              <div
+                class="feat-card reveal"
+                style="border-top: 3px solid var(--safe)"
+              >
+                <div style="font-size: 2rem; margin-bottom: 14px">🍫</div>
+                <h3>Instead of Candy</h3>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    margin-top: 14px;
+                  "
+                >
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Fresh berries
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Frozen banana "nice
+                    cream"
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>85% dark chocolate
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Dried mango (no
+                    sugar added)
+                  </div>
+                </div>
+              </div>
+
+              <!-- Yogurt -->
+              <div
+                class="feat-card reveal"
+                style="border-top: 3px solid var(--safe)"
+              >
+                <div style="font-size: 2rem; margin-bottom: 14px">🥛</div>
+                <h3>Instead of Flavored Yogurt</h3>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    margin-top: 14px;
+                  "
+                >
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Plain Greek yogurt +
+                    honey
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Kefir (plain)
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Coconut yogurt
+                    (unsweetened)
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Yogurt + real fruit
+                    + oats
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bread -->
+              <div
+                class="feat-card reveal"
+                style="border-top: 3px solid var(--safe)"
+              >
+                <div style="font-size: 2rem; margin-bottom: 14px">🍞</div>
+                <h3>Instead of White Bread</h3>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    margin-top: 14px;
+                  "
+                >
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>100% whole grain
+                    bread
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Sourdough bread
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Ezekiel sprouted
+                    grain bread
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      font-size: 0.88rem;
+                      color: var(--text-body);
+                    "
+                  >
+                    <span class="badge badge-safe">✅</span>Large lettuce wraps
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ SHOPPING TIPS — plain static HTML ═══ -->
+          <div
+            style="
+              background: linear-gradient(
+                135deg,
+                var(--forest-deep),
+                var(--forest-mid)
+              );
+              border-radius: var(--r-xl);
+              padding: clamp(32px, 5vw, 56px);
+              color: #fff;
+            "
+            class="reveal"
+          >
+            <div
+              style="
+                font-size: 0.75rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--mint);
+                margin-bottom: 16px;
+              "
+            >
+              Smart Shopping
+            </div>
+            <h2
+              style="
+                font-family: &quot;Fraunces&quot;, serif;
+                font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+                font-weight: 800;
+                letter-spacing: -0.02em;
+                margin-bottom: 36px;
+              "
+            >
+              🛒 Tips for cleaner grocery shopping
+            </h2>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 20px;
+              "
+            >
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.08);
+                  border-radius: var(--r-md);
+                  padding: 22px;
+                  border: 1px solid rgba(255, 255, 255, 0.1);
+                "
+              >
+                <div style="font-size: 1.6rem; margin-bottom: 10px">📋</div>
+                <div
+                  style="
+                    font-family: &quot;Fraunces&quot;, serif;
+                    font-weight: 700;
+                    color: #fff;
+                    font-size: 1rem;
+                    margin-bottom: 8px;
+                  "
+                >
+                  5-Ingredient Rule
+                </div>
+                <div
+                  style="
+                    font-size: 0.85rem;
+                    color: rgba(255, 255, 255, 0.65);
+                    line-height: 1.65;
+                  "
+                >
+                  Choose products with 5 or fewer recognizable ingredients. If
+                  you need a chemistry degree to read it, skip it.
+                </div>
+              </div>
+
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.08);
+                  border-radius: var(--r-md);
+                  padding: 22px;
+                  border: 1px solid rgba(255, 255, 255, 0.1);
+                "
+              >
+                <div style="font-size: 1.6rem; margin-bottom: 10px">🔤</div>
+                <div
+                  style="
+                    font-family: &quot;Fraunces&quot;, serif;
+                    font-weight: 700;
+                    color: #fff;
+                    font-size: 1rem;
+                    margin-bottom: 8px;
+                  "
+                >
+                  Order Matters
+                </div>
+                <div
+                  style="
+                    font-size: 0.85rem;
+                    color: rgba(255, 255, 255, 0.65);
+                    line-height: 1.65;
+                  "
+                >
+                  Ingredients are listed by weight. Sugar listed first? That's
+                  the main ingredient — full stop.
+                </div>
+              </div>
+
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.08);
+                  border-radius: var(--r-md);
+                  padding: 22px;
+                  border: 1px solid rgba(255, 255, 255, 0.1);
+                "
+              >
+                <div style="font-size: 1.6rem; margin-bottom: 10px">🏪</div>
+                <div
+                  style="
+                    font-family: &quot;Fraunces&quot;, serif;
+                    font-weight: 700;
+                    color: #fff;
+                    font-size: 1rem;
+                    margin-bottom: 8px;
+                  "
+                >
+                  Shop the Perimeter
+                </div>
+                <div
+                  style="
+                    font-size: 0.85rem;
+                    color: rgba(255, 255, 255, 0.65);
+                    line-height: 1.65;
+                  "
+                >
+                  Fresh produce, dairy, and proteins are on the store edges.
+                  Ultra-processed products fill the inner aisles.
+                </div>
+              </div>
+
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.08);
+                  border-radius: var(--r-md);
+                  padding: 22px;
+                  border: 1px solid rgba(255, 255, 255, 0.1);
+                "
+              >
+                <div style="font-size: 1.6rem; margin-bottom: 10px">🌿</div>
+                <div
+                  style="
+                    font-family: &quot;Fraunces&quot;, serif;
+                    font-weight: 700;
+                    color: #fff;
+                    font-size: 1rem;
+                    margin-bottom: 8px;
+                  "
+                >
+                  Pronounce It Test
+                </div>
+                <div
+                  style="
+                    font-size: 0.85rem;
+                    color: rgba(255, 255, 255, 0.65);
+                    line-height: 1.65;
+                  "
+                >
+                  If you cannot pronounce an ingredient naturally, your body
+                  probably wasn't designed to process it efficiently.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+      injectNavbar("alternatives.html");
+      injectFooter();
+
+      /* ── Load Scan Result ───────────────────────── */
+      var r = loadResult();
+      if (r) {
+        var esc = escapeHTML;
+        document.getElementById("alt-product-name").textContent =
+          r.productName || "Your Product";
+
+        if (r.alternatives && r.alternatives.length > 0) {
+          var score = Number.isFinite(Number(r.healthScore))
+            ? Math.max(0, Math.min(100, Number(r.healthScore)))
+            : 50;
+          var altRows = "";
+          for (var i = 0; i < r.alternatives.length; i++) {
+            altRows +=
+              '<div class="alert-bar safe">' +
+              '<div class="alert-icon">✅</div>' +
+              "<div>" +
+              '<div class="alert-title">' +
+              esc(r.alternatives[i].name) +
+              "</div>" +
+              '<div class="alert-desc">' +
+              esc(r.alternatives[i].reason) +
+              "</div>" +
+              "</div>" +
+              "</div>";
+          }
+          document.getElementById("scan-alt-content").innerHTML =
+            '<div class="compare-grid">' +
+            '<div class="p-card bad">' +
+            '<span class="p-emoji">❌</span>' +
+            "<h4>" +
+            esc(r.productName || "Scanned Product") +
+            "</h4>" +
+            '<div class="big-score">' +
+            score +
+            "/100</div>" +
+            '<div style="font-size:0.82rem;color:var(--text-muted);margin-top:6px;">' +
+            esc(r.overallVerdict || "EAT IN MODERATION") +
+            "</div>" +
+            "</div>" +
+            '<div class="vs-circle">VS</div>' +
+            '<div class="p-card good">' +
+            '<span class="p-emoji">✅</span>' +
+            "<h4>Healthier Options</h4>" +
+            '<div class="big-score">+' +
+            Math.min(40, 100 - score) +
+            "pts</div>" +
+            '<div style="font-size:0.82rem;color:var(--text-muted);margin-top:6px;">Recommended below</div>' +
+            "</div>" +
+            "</div>" +
+            '<div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;">' +
+            altRows +
+            "</div>";
+        }
+      }
+
+      /* ── Ingredient Swap Cards ──────────────────── */
+      var swaps = [
+        {
+          from: "High Fructose Corn Syrup",
+          to: "Raw Honey or Pure Maple Syrup",
+          why: "Natural sweeteners with trace minerals. They metabolise differently than HFCS and have a lower glycaemic impact on your blood sugar.",
+        },
+        {
+          from: "Palm Oil (refined)",
+          to: "Avocado Oil or Extra Virgin Olive Oil",
+          why: "Avocado oil has a high smoke point and is rich in heart-healthy monounsaturated fats. Olive oil is the gold standard for longevity diets.",
+        },
+        {
+          from: "Artificial Colors (Red 40, Yellow 5)",
+          to: "Natural Colorants (Beet, Turmeric)",
+          why: 'Plant-derived colors with zero links to hyperactivity. Look for "naturally colored" on the packaging label.',
+        },
+        {
+          from: "Sodium Nitrate (Processed Meats)",
+          to: "Uncured Meats or Fresh Cuts",
+          why: '"Uncured" products use celery salt as a natural alternative. Even better: choose fresh, unprocessed meat cuts entirely.',
+        },
+        {
+          from: "BHA / BHT Preservatives",
+          to: "Vitamin E (Mixed Tocopherols)",
+          why: 'Natural antioxidant that preserves freshness just as effectively. Look for "mixed tocopherols" as the preservative on labels.',
+        },
+        {
+          from: "White Refined Sugar",
+          to: "Coconut Sugar or Whole Dates",
+          why: "Coconut sugar has a lower glycaemic index (35 vs 65). Dates contain fibre which naturally slows sugar absorption.",
+        },
+        {
+          from: "Aspartame / Acesulfame K",
+          to: "Stevia or Monk Fruit Extract",
+          why: "Zero-calorie natural sweeteners with no carcinogen concerns. Both are plant-derived and do not disrupt gut bacteria.",
+        },
+        {
+          from: "Soy Lecithin",
+          to: "Sunflower Lecithin",
+          why: "Non-GMO and no soy allergy risk. Works identically as an emulsifier and is increasingly common in organic products.",
+        },
+      ];
+
+      var swapHTML = "";
+      for (var j = 0; j < swaps.length; j++) {
+        var s = swaps[j];
+        swapHTML +=
+          '<div style="background:var(--surface);border-radius:var(--r-md);padding:24px 28px;' +
+          "border:1px solid rgba(197,235,213,.5);display:grid;grid-template-columns:1fr 40px 1fr 1fr;" +
+          'gap:16px;align-items:center;box-shadow:var(--shadow-sm);">' +
+          "<div>" +
+          '<div style="font-size:0.72rem;font-weight:700;color:var(--danger);letter-spacing:.08em;' +
+          'text-transform:uppercase;margin-bottom:4px;">Avoid</div>' +
+          '<div style="font-weight:700;font-size:0.95rem;color:var(--danger);">&#10060; ' +
+          s.from +
+          "</div>" +
+          "</div>" +
+          '<div style="font-size:1.4rem;text-align:center;color:var(--text-faint);">&#8594;</div>' +
+          "<div>" +
+          '<div style="font-size:0.72rem;font-weight:700;color:var(--safe);letter-spacing:.08em;' +
+          'text-transform:uppercase;margin-bottom:4px;">Better Choice</div>' +
+          '<div style="font-weight:700;font-size:0.95rem;color:var(--safe);">&#9989; ' +
+          s.to +
+          "</div>" +
+          "</div>" +
+          '<div style="background:var(--cream);border-radius:var(--r-sm);padding:12px 14px;' +
+          'font-size:0.82rem;color:var(--text-muted);line-height:1.6;">' +
+          s.why +
+          "</div>" +
+          "</div>";
+      }
+      document.getElementById("swap-cards").innerHTML = swapHTML;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personalized Health Alerts – NutriFacts</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="page-wrap">
+      <div class="page-banner">
+        <div class="eyebrow">Your Health Profile</div>
+        <h1>Personalized<br />Health Alerts</h1>
+        <p>
+          Set your dietary preferences and conditions to receive custom food
+          safety warnings tailored just for you.
+        </p>
+      </div>
+
+      <section class="section">
+        <div class="container">
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 36px;
+              align-items: start;
+            "
+          >
+            <!-- ─ LEFT: Form ─ -->
+            <div>
+              <div class="scan-panel">
+                <div class="scan-panel-header">
+                  <h2>⚙️ Your Health Profile</h2>
+                  <p>Configure once — applied to all future scans</p>
+                </div>
+                <div class="scan-panel-body">
+                  <div class="form-group">
+                    <label class="form-label">🎂 Age Group</label>
+                    <select class="select-field" id="age-group">
+                      <option value="child">Child (under 12)</option>
+                      <option value="teen">Teen (13–17)</option>
+                      <option value="adult" selected>Adult (18–60)</option>
+                      <option value="senior">Senior (60+)</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">🥗 Diet Type</label>
+                    <select class="select-field" id="diet-type">
+                      <option value="none" selected>No specific diet</option>
+                      <option value="vegetarian">Vegetarian</option>
+                      <option value="vegan">Vegan</option>
+                      <option value="keto">Ketogenic (Low Carb)</option>
+                      <option value="diabetic">Diabetic-Friendly</option>
+                      <option value="heart">Heart-Healthy</option>
+                      <option value="gluten-free">Gluten-Free</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">🏥 Health Conditions</label>
+                    <div class="checkbox-grid">
+                      <label class="cbox-pill"
+                        ><input type="checkbox" value="diabetes" /> 🩸
+                        Diabetes</label
+                      >
+                      <label class="cbox-pill"
+                        ><input type="checkbox" value="heart" /> 🫀 Heart
+                        Disease</label
+                      >
+                      <label class="cbox-pill"
+                        ><input type="checkbox" value="hypertension" /> 💊
+                        Hypertension</label
+                      >
+                      <label class="cbox-pill"
+                        ><input type="checkbox" value="obesity" /> ⚖️
+                        Obesity</label
+                      >
+                      <label class="cbox-pill"
+                        ><input type="checkbox" value="celiac" /> 🌾 Celiac
+                        Disease</label
+                      >
+                      <label class="cbox-pill"
+                        ><input type="checkbox" value="ibs" /> 🦠 IBS /
+                        IBD</label
+                      >
+                      <label class="cbox-pill"
+                        ><input type="checkbox" value="lactose" /> 🥛 Lactose
+                        Intolerance</label
+                      >
+                      <label class="cbox-pill"
+                        ><input type="checkbox" value="kidney" /> 🫘 Kidney
+                        Disease</label
+                      >
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">🚫 Allergens to Watch</label>
+                    <div class="checkbox-grid">
+                      <label class="cbox-pill"
+                        ><input type="checkbox" value="nuts" /> 🥜 Nuts</label
+                      >
+                      <label class="cbox-pill"
+                        ><input type="checkbox" value="soy" /> 🫘 Soy</label
+                      >
+                      <label class="cbox-pill"
+                        ><input type="checkbox" value="gluten" /> 🌾
+                        Gluten</label
+                      >
+                      <label class="cbox-pill"
+                        ><input type="checkbox" value="dairy" /> 🧀 Dairy</label
+                      >
+                      <label class="cbox-pill"
+                        ><input type="checkbox" value="eggs" /> 🥚 Eggs</label
+                      >
+                      <label class="cbox-pill"
+                        ><input type="checkbox" value="shellfish" /> 🦐
+                        Shellfish</label
+                      >
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">⚡ Alert Sensitivity</label>
+                    <select class="select-field" id="alert-sens">
+                      <option value="all" selected>Show all risks</option>
+                      <option value="medium">Medium & High only</option>
+                      <option value="high">High risk only</option>
+                    </select>
+                  </div>
+
+                  <button
+                    class="btn btn-primary"
+                    style="
+                      width: 100%;
+                      justify-content: center;
+                      border-radius: var(--r-md);
+                    "
+                    onclick="genAlerts()"
+                  >
+                    🔔 Generate My Alerts
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ─ RIGHT: Alerts ─ -->
+            <div>
+              <h2
+                style="
+                  font-family: &quot;Fraunces&quot;, serif;
+                  font-size: 1.8rem;
+                  font-weight: 800;
+                  color: var(--text-primary);
+                  margin-bottom: 6px;
+                "
+              >
+                Your Alerts
+              </h2>
+              <p style="color: var(--text-muted); margin-bottom: 24px">
+                Personalized safety notifications based on your profile
+              </p>
+
+              <div
+                id="alert-summary"
+                style="
+                  display: flex;
+                  gap: 8px;
+                  flex-wrap: wrap;
+                  margin-bottom: 20px;
+                "
+              ></div>
+
+              <!-- Scan-based -->
+              <div id="scan-section" style="display: none; margin-bottom: 28px">
+                <div
+                  style="
+                    font-family: &quot;Fraunces&quot;, serif;
+                    font-weight: 700;
+                    font-size: 1rem;
+                    color: var(--danger);
+                    margin-bottom: 14px;
+                  "
+                >
+                  🔍 Alerts From Your Last Scan
+                </div>
+                <div id="scan-alert-rows"></div>
+              </div>
+
+              <div id="general-alert-rows"></div>
+
+              <div
+                id="alert-placeholder"
+                style="
+                  text-align: center;
+                  padding: 48px 20px;
+                  color: var(--text-muted);
+                "
+              >
+                <div style="font-size: 3.5rem; margin-bottom: 14px">🔔</div>
+                <p style="font-size: 0.95rem">
+                  Click "Generate My Alerts" to see your personalized health
+                  warnings.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- General reminders -->
+          <div style="margin-top: 70px">
+            <div class="sec-header reveal">
+              <div class="sec-eyebrow">Safety Reminders</div>
+              <h2>🏥 General Food Safety<br /><em>Best Practices</em></h2>
+            </div>
+            <div class="cards-grid-4 stagger">
+              <div class="feat-card reveal">
+                <div class="feat-icon green">📖</div>
+                <h3>Always Read Labels</h3>
+                <p>
+                  Check ingredient lists even on products labeled "natural" or
+                  "healthy." Marketing claims aren't regulated by the FDA.
+                </p>
+              </div>
+              <div class="feat-card reveal">
+                <div class="feat-icon amber">🍽️</div>
+                <h3>Watch Portion Sizes</h3>
+                <p>
+                  Nutrition facts are per serving, but packages often contain
+                  2–3 servings. Multiply all values accordingly.
+                </p>
+              </div>
+              <div class="feat-card reveal">
+                <div class="feat-icon green">🌿</div>
+                <h3>Choose Whole Foods</h3>
+                <p>
+                  Products with fewer than 5 recognizable ingredients are
+                  generally safer. If you can't read it, reconsider it.
+                </p>
+              </div>
+              <div class="feat-card reveal">
+                <div class="feat-icon blue">💧</div>
+                <h3>Stay Hydrated</h3>
+                <p>
+                  Foods high in sodium (>600mg/serving) require extra water
+                  intake to support proper kidney processing of excess salt.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+      injectNavbar("health-alerts.html");
+      injectFooter();
+
+      function genAlerts() {
+        const esc = escapeHTML;
+        const age = document.getElementById("age-group").value;
+        const diet = document.getElementById("diet-type").value;
+        const sens = document.getElementById("alert-sens").value;
+        const conds = [
+          ...document.querySelectorAll(".checkbox-grid input:checked"),
+        ]
+          .filter((c) =>
+            [
+              "diabetes",
+              "heart",
+              "hypertension",
+              "obesity",
+              "celiac",
+              "ibs",
+              "lactose",
+              "kidney",
+            ].includes(c.value),
+          )
+          .map((c) => c.value);
+        const alls = [
+          ...document.querySelectorAll(".checkbox-grid input:checked"),
+        ]
+          .filter((c) =>
+            ["nuts", "soy", "gluten", "dairy", "eggs", "shellfish"].includes(
+              c.value,
+            ),
+          )
+          .map((c) => c.value);
+
+        const alerts = buildAlerts(age, diet, conds, alls, sens);
+        document.getElementById("alert-placeholder").style.display = "none";
+
+        // Summary
+        const counts = {};
+        alerts.forEach((a) => (counts[a.type] = (counts[a.type] || 0) + 1));
+        document.getElementById("alert-summary").innerHTML = [
+          counts.danger
+            ? `<span class="badge badge-danger">❌ ${counts.danger} Critical</span>`
+            : "",
+          counts.warn
+            ? `<span class="badge badge-warn">⚠️ ${counts.warn} Caution</span>`
+            : "",
+          counts.info
+            ? `<span class="badge badge-info">ℹ️ ${counts.info} Info</span>`
+            : "",
+          counts.safe
+            ? `<span class="badge badge-safe">✅ ${counts.safe} Active</span>`
+            : "",
+        ].join("");
+
+        document.getElementById("general-alert-rows").innerHTML = alerts
+          .map(
+            (a) => `
+      <div class="alert-bar ${a.type}">
+        <div class="alert-icon">${a.icon}</div>
+        <div><div class="alert-title">${a.title}</div><div class="alert-desc">${a.msg}</div></div>
+      </div>`,
+          )
+          .join("");
+
+        // Scan-based
+        const r = loadResult();
+        if (r?.harmfulIngredients?.length) {
+          document.getElementById("scan-section").style.display = "block";
+          document.getElementById("scan-alert-rows").innerHTML =
+            r.harmfulIngredients
+              .map(
+                (h) => `
+        <div class="alert-bar ${h.severity === "high" ? "danger" : "warn"}">
+          <div class="alert-icon">${h.severity === "high" ? "❌" : "⚠️"}</div>
+          <div>
+            <div class="alert-title">${esc(h.name)} — found in ${esc(r.productName || "Scanned Product")}</div>
+            <div class="alert-desc">${esc(h.reason)}${h.fdaNote ? ` <em>FDA: ${esc(h.fdaNote)}</em>` : ""}</div>
+          </div>
+        </div>`,
+              )
+              .join("");
+        }
+        showToast("Alerts generated!", "success");
+      }
+
+      function buildAlerts(age, diet, conds, alls, sens) {
+        const all = [];
+        if (age === "child")
+          all.push({
+            type: "warn",
+            icon: "👶",
+            title: "Child Safety Mode Active",
+            msg: "Extra protection on. Caffeine, artificial colors, and high sugar will always be flagged in scans.",
+          });
+        if (age === "senior")
+          all.push({
+            type: "info",
+            icon: "👴",
+            title: "Senior Mode Active",
+            msg: "Sodium, potassium, and drug-interaction ingredients will be carefully monitored.",
+          });
+        if (diet === "diabetic")
+          all.push({
+            type: "danger",
+            icon: "🩸",
+            title: "Diabetic Alert Mode",
+            msg: "All high-sugar, high-GI, and artificial sweetener ingredients flagged. Watch for HFCS, dextrose, maltose.",
+          });
+        if (diet === "heart")
+          all.push({
+            type: "danger",
+            icon: "🫀",
+            title: "Heart Health Mode",
+            msg: "Trans fats, saturated fats, and high-sodium ingredients highlighted. Target <1500mg sodium/day.",
+          });
+        if (diet === "keto")
+          all.push({
+            type: "warn",
+            icon: "🥑",
+            title: "Keto Mode Active",
+            msg: "High-carb ingredients (sugars, starches, HFCS) flagged to help maintain ketosis.",
+          });
+        if (diet === "vegan")
+          all.push({
+            type: "info",
+            icon: "🌱",
+            title: "Vegan Mode Active",
+            msg: "Animal-derived additives (whey, casein, gelatin, carmine, shellac) flagged immediately.",
+          });
+        if (diet === "gluten-free")
+          all.push({
+            type: "danger",
+            icon: "🌾",
+            title: "Gluten-Free Mode",
+            msg: "All wheat, barley, rye, malt, and modified food starch flagged — even trace amounts.",
+          });
+        if (conds.includes("hypertension"))
+          all.push({
+            type: "danger",
+            icon: "💊",
+            title: "High BP Warning",
+            msg: "Sodium above 400mg per serving triggers an alert. Avoid canned soups, pickled foods, and processed meats.",
+          });
+        if (conds.includes("ibs"))
+          all.push({
+            type: "warn",
+            icon: "🦠",
+            title: "IBS/IBD Alert Mode",
+            msg: "Emulsifiers (Polysorbate 80, CMC, Carrageenan), artificial sweeteners, and FODMAPs flagged.",
+          });
+        if (conds.includes("celiac"))
+          all.push({
+            type: "danger",
+            icon: "⚠️",
+            title: "Celiac Disease Mode",
+            msg: "Strict gluten monitoring. Even trace wheat, barley, or rye will trigger a critical alert.",
+          });
+        if (conds.includes("kidney"))
+          all.push({
+            type: "warn",
+            icon: "🫘",
+            title: "Kidney Disease Monitoring",
+            msg: "High phosphorus, potassium, and sodium additives flagged. Avoid dark colas and phosphoric acid.",
+          });
+        if (conds.includes("lactose"))
+          all.push({
+            type: "info",
+            icon: "🥛",
+            title: "Lactose Intolerance Mode",
+            msg: "Dairy-derived ingredients (milk, whey, casein, lactose, butter) highlighted in all scans.",
+          });
+        if (alls.length > 0)
+          all.push({
+            type: "danger",
+            icon: "🚨",
+            title: `Allergen Watch: ${alls.join(", ")}`,
+            msg: `Immediate red alert if any of these allergens are detected: ${alls.map((a) => a[0].toUpperCase() + a.slice(1)).join(", ")}.`,
+          });
+        all.push({
+          type: "safe",
+          icon: "✅",
+          title: "FDA Database Active",
+          msg: "All scanned products are automatically cross-referenced against the FDA harmful substances database.",
+        });
+        all.push({
+          type: "info",
+          icon: "ℹ️",
+          title: "Tip: Scan to Activate Full Alerts",
+          msg: "Scan a product to see condition-specific alerts based on actual detected ingredients.",
+        });
+
+        if (sens === "high") return all.filter((a) => a.type === "danger");
+        if (sens === "medium")
+          return all.filter((a) => a.type === "danger" || a.type === "warn");
+        return all;
+      }
+
+      genAlerts(); // auto-generate on load
+    </script>
+  </body>
+</html>
