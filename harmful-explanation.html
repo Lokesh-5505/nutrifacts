@@ -196,31 +196,81 @@
                       Status
                     </div>
                   </div>
-                  ${[ ['Trans Fats (Partially Hydrogenated Oils)','BANNED
-                  (2018)','Cardiovascular risk. FDA banned artificial trans
-                  fats.','badge-danger'], ['Red Dye No. 3 (Erythrosine)','BANNED
-                  (Jan 2025)','Linked to thyroid tumors in animal
-                  studies.','badge-danger'], ['Brominated Vegetable Oil
-                  (BVO)','REVOKED (2024)','FDA revoked GRAS status — accumulates
-                  in tissues.','badge-danger'], ['Potassium Bromate','BANNED in
-                  EU/Canada','Possible carcinogen. Still permitted in
-                  USA.','badge-warn'], ['Caramel Color IV','Under
-                  Review','Contains 4-MEI, classified as possible
-                  carcinogen.','badge-warn'], ['High Fructose Corn
-                  Syrup','Monitored','Permitted but FDA advises limiting to <10%
-                  daily calories.','badge-info'], ].map(([name,status,note,cls])
-                  => `
                   <div
                     class="ing-row"
                     style="padding: 18px 24px; flex-wrap: wrap; gap: 8px"
                   >
                     <div style="flex: 1; min-width: 200px">
-                      <div class="ing-name">${name}</div>
-                      <div class="ing-sub">${note}</div>
+                      <div class="ing-name">
+                        Trans Fats (Partially Hydrogenated Oils)
+                      </div>
+                      <div class="ing-sub">
+                        Cardiovascular risk. FDA banned artificial trans fats.
+                      </div>
                     </div>
-                    <span class="badge ${cls}">${status}</span>
+                    <span class="badge badge-danger">BANNED (2018)</span>
                   </div>
-                  `).join('')}
+                  <div
+                    class="ing-row"
+                    style="padding: 18px 24px; flex-wrap: wrap; gap: 8px"
+                  >
+                    <div style="flex: 1; min-width: 200px">
+                      <div class="ing-name">Red Dye No. 3 (Erythrosine)</div>
+                      <div class="ing-sub">
+                        Linked to thyroid tumors in animal studies.
+                      </div>
+                    </div>
+                    <span class="badge badge-danger">BANNED (Jan 2025)</span>
+                  </div>
+                  <div
+                    class="ing-row"
+                    style="padding: 18px 24px; flex-wrap: wrap; gap: 8px"
+                  >
+                    <div style="flex: 1; min-width: 200px">
+                      <div class="ing-name">Brominated Vegetable Oil (BVO)</div>
+                      <div class="ing-sub">
+                        FDA revoked GRAS status - accumulates in tissues.
+                      </div>
+                    </div>
+                    <span class="badge badge-danger">REVOKED (2024)</span>
+                  </div>
+                  <div
+                    class="ing-row"
+                    style="padding: 18px 24px; flex-wrap: wrap; gap: 8px"
+                  >
+                    <div style="flex: 1; min-width: 200px">
+                      <div class="ing-name">Potassium Bromate</div>
+                      <div class="ing-sub">
+                        Possible carcinogen. Still permitted in USA.
+                      </div>
+                    </div>
+                    <span class="badge badge-warn">BANNED in EU/Canada</span>
+                  </div>
+                  <div
+                    class="ing-row"
+                    style="padding: 18px 24px; flex-wrap: wrap; gap: 8px"
+                  >
+                    <div style="flex: 1; min-width: 200px">
+                      <div class="ing-name">Caramel Color IV</div>
+                      <div class="ing-sub">
+                        Contains 4-MEI, classified as possible carcinogen.
+                      </div>
+                    </div>
+                    <span class="badge badge-warn">Under Review</span>
+                  </div>
+                  <div
+                    class="ing-row"
+                    style="padding: 18px 24px; flex-wrap: wrap; gap: 8px"
+                  >
+                    <div style="flex: 1; min-width: 200px">
+                      <div class="ing-name">High Fructose Corn Syrup</div>
+                      <div class="ing-sub">
+                        Permitted but FDA advises limiting to less than 10%
+                        daily calories.
+                      </div>
+                    </div>
+                    <span class="badge badge-info">Monitored</span>
+                  </div>
                 </div>
               </div>
             </div>
