@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login / Sign Up – NutriFacts</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/auth.css"/>
+</head>
+<body>
+
+<!-- ── Background blobs ───────────────────────── -->
+<div class="auth-bg" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<!-- ── Auth page wrapper ──────────────────────── -->
+<div class="page-wrap auth-page">
+  <div class="auth-card">
+
+    <!-- Logo -->
+    <a href="index.html" class="auth-logo">
+      <div class="auth-logo-mark">🥦</div>
+      <span class="auth-logo-text">Nutri<em>Facts</em></span>
+    </a>
+
+    <!-- Tab toggle -->
+    <div class="auth-tabs" role="tablist" aria-label="Login or Sign Up">
+      <div class="auth-tabs-slider" id="tabsSlider" aria-hidden="true"></div>
+      <button class="auth-tab active" id="tabLogin"
+              role="tab" aria-selected="true" aria-controls="panelLogin">
+        Sign In
+      </button>
+      <button class="auth-tab" id="tabSignup"
+              role="tab" aria-selected="false" aria-controls="panelSignup">
+        Sign Up
+      </button>
+    </div>
+
+    <!-- Heading (shared, updated by JS) -->
+    <h1 class="auth-heading" id="authHeading">Welcome <em>back</em></h1>
+    <p class="auth-subheading" id="authSubheading">
+      Sign in to access your food analysis history.
+    </p>
+
+    <!-- ── Success state ──────────────────────── -->
+    <div class="auth-success" id="authSuccess" aria-live="polite">
+      <span class="auth-success-icon">✅</span>
+      <h3>You're in!</h3>
+      <p id="successMsg"></p>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         LOGIN PANEL
+         ════════════════════════════════════════ -->
+    <div class="auth-form-panel active" id="panelLogin" role="tabpanel" aria-labelledby="tabLogin">
+      <form id="loginForm" novalidate>
+
+        <!-- Email -->
+        <div class="auth-field">
+          <label class="auth-label" for="loginEmail">Email Address</label>
+          <div class="auth-input-wrap">
+            <input class="auth-input" type="email" id="loginEmail"
+                   name="email" placeholder="you@example.com"
+                   autocomplete="email" inputmode="email"/>
+          </div>
+          <span class="auth-field-error" id="loginEmailError" aria-live="polite"></span>
+        </div>
+
+        <!-- Password -->
+        <div class="auth-field">
+          <label class="auth-label" for="loginPassword">Password</label>
+          <div class="auth-input-wrap">
+            <input class="auth-input has-toggle" type="password" id="loginPassword"
+                   name="password" placeholder="Enter your password"
+                   autocomplete="current-password"/>
+            <button type="button" class="pw-toggle" aria-label="Show password">👁</button>
+          </div>
+          <span class="auth-field-error" id="loginPasswordError" aria-live="polite"></span>
+        </div>
+
+        <!-- Options row -->
+        <div class="auth-options">
+          <label class="auth-checkbox-label">
+            <input class="auth-checkbox" type="checkbox" id="rememberMe"/>
+            Remember me
+          </label>
+          <a href="#" class="auth-forgot" tabindex="0">Forgot password?</a>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="auth-submit">
+          <span class="btn-text">Sign In →</span>
+          <span class="btn-spinner" aria-hidden="true"></span>
+        </button>
+
+        <!-- Divider -->
+        <div class="auth-divider">or continue with</div>
+
+        <!-- Social -->
+        <div class="auth-social">
+          <button type="button" class="auth-social-btn" aria-label="Sign in with Google">
+            <span class="auth-social-icon">🌐</span> Google
+          </button>
+          <button type="button" class="auth-social-btn" aria-label="Sign in with Apple">
+            <span class="auth-social-icon">🍎</span> Apple
+          </button>
+        </div>
+
+        <!-- Footer note -->
+        <p class="auth-footer-note">
+          Don't have an account?
+          <a href="#" id="switchToSignup">Create one →</a>
+        </p>
+
+      </form>
+    </div><!-- /panelLogin -->
+
+    <!-- ════════════════════════════════════════
+         SIGNUP PANEL
+         ════════════════════════════════════════ -->
+    <div class="auth-form-panel" id="panelSignup" role="tabpanel" aria-labelledby="tabSignup">
+      <form id="signupForm" novalidate>
+
+        <!-- Full name -->
+        <div class="auth-field">
+          <label class="auth-label" for="signupName">Full Name</label>
+          <div class="auth-input-wrap">
+            <input class="auth-input" type="text" id="signupName"
+                   name="name" placeholder="Jane Smith"
+                   autocomplete="name"/>
+          </div>
+          <span class="auth-field-error" aria-live="polite"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="auth-field">
+          <label class="auth-label" for="signupEmail">Email Address</label>
+          <div class="auth-input-wrap">
+            <input class="auth-input" type="email" id="signupEmail"
+                   name="email" placeholder="you@example.com"
+                   autocomplete="email" inputmode="email"/>
+          </div>
+          <span class="auth-field-error" aria-live="polite"></span>
+        </div>
+
+        <!-- Password + strength -->
+        <div class="auth-field">
+          <label class="auth-label" for="signupPassword">Password</label>
+          <div class="auth-input-wrap">
+            <input class="auth-input has-toggle" type="password" id="signupPassword"
+                   name="password" placeholder="Create a strong password"
+                   autocomplete="new-password"/>
+            <button type="button" class="pw-toggle" aria-label="Show password">👁</button>
+          </div>
+          <div class="pw-strength-wrap" id="pwStrengthWrap" aria-live="polite">
+            <div class="pw-strength-bar">
+              <div class="pw-strength-fill" id="pwStrengthFill"></div>
+            </div>
+            <span class="pw-strength-label" id="pwStrengthLabel"></span>
+          </div>
+          <span class="auth-field-error" aria-live="polite"></span>
+        </div>
+
+        <!-- Confirm password -->
+        <div class="auth-field">
+          <label class="auth-label" for="signupPasswordConfirm">Confirm Password</label>
+          <div class="auth-input-wrap">
+            <input class="auth-input has-toggle" type="password" id="signupPasswordConfirm"
+                   name="password_confirm" placeholder="Re-enter your password"
+                   autocomplete="new-password"/>
+            <button type="button" class="pw-toggle" aria-label="Show password">👁</button>
+          </div>
+          <span class="auth-field-error" aria-live="polite"></span>
+        </div>
+
+        <!-- Terms note -->
+        <p class="auth-terms">
+          By creating an account you agree to our
+          <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+        </p>
+
+        <!-- Submit -->
+        <button type="submit" class="auth-submit">
+          <span class="btn-text">Create Account →</span>
+          <span class="btn-spinner" aria-hidden="true"></span>
+        </button>
+
+        <!-- Divider -->
+        <div class="auth-divider">or continue with</div>
+
+        <!-- Social -->
+        <div class="auth-social">
+          <button type="button" class="auth-social-btn" aria-label="Sign up with Google">
+            <span class="auth-social-icon">🌐</span> Google
+          </button>
+          <button type="button" class="auth-social-btn" aria-label="Sign up with Apple">
+            <span class="auth-social-icon">🍎</span> Apple
+          </button>
+        </div>
+
+        <!-- Footer note -->
+        <p class="auth-footer-note">
+          Already have an account?
+          <a href="#" id="switchToLogin">Sign in →</a>
+        </p>
+
+      </form>
+    </div><!-- /panelSignup -->
+
+  </div><!-- /auth-card -->
+</div><!-- /auth-page -->
+
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  injectNavbar('auth.html');
+  injectFooter();
+
+  /* Inline tab-switch links */
+  document.getElementById('switchToSignup').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('tabSignup').click();
+  });
+  document.getElementById('switchToLogin').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('tabLogin').click();
+  });
+</script>
+</body>
+</html>

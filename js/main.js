@@ -11,6 +11,7 @@ function injectNavbar(activePage) {
     { href: "health-alerts.html", label: "Alerts" },
     { href: "alternatives.html", label: "Alternatives" },
     { href: "ai-diet.html", label: "AI & Kids" },
+    { href: "auth.html", label: "Login" },
   ];
 
   const linksHtml = links
@@ -77,6 +78,7 @@ function injectFooter() {
         <a href="health-alerts.html">Alerts</a>
         <a href="alternatives.html">Alternatives</a>
         <a href="ai-diet.html">AI Diet</a>
+        <a href="auth.html">Login</a>
       </nav>
     </div>
     <div class="footer-bottom">
