@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NutriFacts — AI Food Label Analyzer</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="hero-bg-blobs">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+    <div class="hero-grid">
+      <!-- Left copy -->
+      <div>
+        <div class="hero-eyebrow"><span class="dot"></span> AI-Powered Food Safety Scanner</div>
+        <h1>
+          Know <span class="ital">exactly</span><br>
+          what's <span class="thin">hiding</span><br>
+          in your food.
+        </h1>
+        <p class="hero-desc">
+          Snap a photo of any packaged food label. Our AI instantly detects harmful additives, calculates a health risk score, and tells you what's safe — in plain language.
+        </p>
+        <div class="hero-actions">
+          <a href="scan.html" class="btn btn-primary btn-lg">📷 Start Scanning Free</a>
+          <a href="harmful-list.html" class="btn btn-ghost">View Harmful Ingredients →</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="num" id="hs1">0</div><div class="lbl">Additives Tracked</div></div>
+          <div class="hero-stat"><div class="num" id="hs2">0</div><div class="lbl">FDA Warnings</div></div>
+          <div class="hero-stat"><div class="num" id="hs3">0</div><div class="lbl">Ingredients in DB</div></div>
+        </div>
+      </div>
+
+      <!-- Right preview card -->
+      <div class="hero-card">
+        <div class="hcard-label">Live Analysis Preview</div>
+        <div class="hcard-product">
+          <span class="p-icon">🍪</span>
+          <div>
+            <div class="p-name">Oreo Double Stuf</div>
+            <div class="p-sub">Packaged Cookies · 140 cal / serving</div>
+          </div>
+        </div>
+        <div class="hcard-score">
+          <div class="mini-ring">
+            <svg viewBox="0 0 72 72" width="72" height="72">
+              <circle cx="36" cy="36" r="28" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="8"/>
+              <circle cx="36" cy="36" r="28" fill="none" stroke="#d97706" stroke-width="8"
+                stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="79" />
+            </svg>
+            <div class="ring-num">34</div>
+          </div>
+          <div class="hcard-score-text">
+            <div class="score-title">⚠️ Moderate Risk</div>
+            <div class="score-sub">Contains 4 concerning ingredients</div>
+          </div>
+        </div>
+        <div style="color:rgba(255,255,255,.4);font-size:0.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">Detected Ingredients</div>
+        <div class="hcard-ings">
+          <span class="hcard-ing bad">❌ High Fructose CS</span>
+          <span class="hcard-ing bad">❌ Palm Oil</span>
+          <span class="hcard-ing warn">⚠️ Soy Lecithin</span>
+          <span class="hcard-ing warn">⚠️ Vanillin</span>
+          <span class="hcard-ing ok">✅ Cocoa</span>
+          <span class="hcard-ing ok">✅ Salt</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ STATS ═══ -->
+  <section style="background:var(--surface);padding:0 clamp(20px,5vw,60px);">
+    <div style="max-width:1160px;margin:0 auto;transform:translateY(-40px);">
+      <div class="stats-strip">
+        <div class="stat-cell"><div class="stat-num" id="s1">0</div><div class="stat-lbl">Harmful Additives Tracked</div></div>
+        <div class="stat-cell"><div class="stat-num" id="s2">0</div><div class="stat-lbl">FDA Safety Warnings</div></div>
+        <div class="stat-cell"><div class="stat-num" id="s3">0</div><div class="stat-lbl">Ingredients in Database</div></div>
+        <div class="stat-cell"><div class="stat-num" id="s4">0</div><div class="stat-lbl">Health Categories</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ HOW IT WORKS ═══ -->
+  <section class="section" style="background:var(--surface);">
+    <div class="container">
+      <div class="sec-header centered reveal">
+        <div class="sec-eyebrow">How It Works</div>
+        <h2>From snap to safety<br>in <em>3 simple steps</em></h2>
+        <p>Our AI reads your food label, cross-references every ingredient against safety databases, and gives you a clear health verdict within seconds.</p>
+      </div>
+      <div class="steps-wrap stagger">
+        <div class="step-item reveal">
+          <div class="step-circle">1</div>
+          <h3>📷 Take a Photo</h3>
+          <p>Capture the ingredient list on any packaged food with your camera, or type it in manually.</p>
+        </div>
+        <div class="step-item reveal">
+          <div class="step-circle">2</div>
+          <h3>🔬 AI Analyzes</h3>
+          <p>Claude AI cross-references every ingredient with FDA databases, scientific studies, and safety records.</p>
+        </div>
+        <div class="step-item reveal">
+          <div class="step-circle">3</div>
+          <h3>📊 Get Your Report</h3>
+          <p>Receive a health score, risk flags, FDA alerts, and personalized diet recommendations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FEATURES ═══ -->
+  <section class="section" style="background:var(--bg);">
+    <div class="container">
+      <div class="sec-header centered reveal">
+        <div class="sec-eyebrow">All Features</div>
+        <h2>8 powerful tools for<br><em>safer eating</em></h2>
+        <p>Everything you need to understand exactly what's inside your packaged food.</p>
+      </div>
+      <div class="cards-grid-4 stagger">
+        <div class="feat-card reveal"><div class="feat-icon green">📷</div><h3>Camera Scanner</h3><p>Point your phone camera at any ingredient label and let AI extract and analyze it instantly.</p></div>
+        <div class="feat-card reveal"><div class="feat-icon amber">📊</div><h3>Health Risk Score</h3><p>Get a 0–100 health score showing whether a product is safe, moderate risk, or dangerous.</p></div>
+        <div class="feat-card reveal"><div class="feat-icon red">🔔</div><h3>Personalized Alerts</h3><p>Custom warnings for your allergies, dietary preferences, and health conditions like diabetes.</p></div>
+        <div class="feat-card reveal"><div class="feat-icon green">🥗</div><h3>Healthy Alternatives</h3><p>If a product contains risky ingredients, we instantly suggest safer and healthier alternatives.</p></div>
+        <div class="feat-card reveal"><div class="feat-icon red">☣️</div><h3>Ingredient Explanations</h3><p>Understand exactly why Polysorbate 80, BHT, and others are harmful — in plain language.</p></div>
+        <div class="feat-card reveal"><div class="feat-icon blue">🇺🇸</div><h3>FDA Safety Alerts</h3><p>Checks every ingredient against real FDA safety warnings, recalls, and regulatory actions.</p></div>
+        <div class="feat-card reveal"><div class="feat-icon green">🤖</div><h3>AI Diet Recommendations</h3><p>Ask our AI assistant any nutrition question. Get personalized diet tips based on your scan.</p></div>
+        <div class="feat-card reveal"><div class="feat-icon amber">👶</div><h3>Child Safety Mode</h3><p>Flags ingredients unsafe for children — caffeine, artificial colors, and excess sugar.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WHY IT MATTERS ═══ -->
+  <section class="section" style="background:var(--surface);">
+    <div class="container">
+      <div class="sec-header centered reveal">
+        <div class="sec-eyebrow">Why It Matters</div>
+        <h2>Hidden ingredients,<br><em>real health consequences</em></h2>
+        <p>Common packaged food additives are linked to serious long-term health conditions that most people are completely unaware of.</p>
+      </div>
+      <div class="cards-grid-4 stagger">
+        <div class="card reveal" style="text-align:center;border-top:4px solid var(--danger);">
+          <div style="font-size:3rem;margin-bottom:18px;">🫀</div>
+          <h3 style="font-family:'Fraunces',serif;font-size:1.15rem;font-weight:800;color:var(--text-primary);margin-bottom:10px;">Heart Disease</h3>
+          <p style="color:var(--text-muted);font-size:0.9rem;line-height:1.7;">Trans fats and high sodium in processed foods raise LDL cholesterol and blood pressure, directly increasing cardiovascular risk.</p>
+        </div>
+        <div class="card reveal" style="text-align:center;border-top:4px solid var(--warn);">
+          <div style="font-size:3rem;margin-bottom:18px;">🩸</div>
+          <h3 style="font-family:'Fraunces',serif;font-size:1.15rem;font-weight:800;color:var(--text-primary);margin-bottom:10px;">Type 2 Diabetes</h3>
+          <p style="color:var(--text-muted);font-size:0.9rem;line-height:1.7;">HFCS and refined sugars repeatedly spike insulin levels, progressively damaging insulin sensitivity and raising diabetes risk.</p>
+        </div>
+        <div class="card reveal" style="text-align:center;border-top:4px solid var(--warn);">
+          <div style="font-size:3rem;margin-bottom:18px;">⚖️</div>
+          <h3 style="font-family:'Fraunces',serif;font-size:1.15rem;font-weight:800;color:var(--text-primary);margin-bottom:10px;">Obesity</h3>
+          <p style="color:var(--text-muted);font-size:0.9rem;line-height:1.7;">Artificial emulsifiers disrupt gut bacteria balance, impairing the body's natural appetite and metabolism regulation.</p>
+        </div>
+        <div class="card reveal" style="text-align:center;border-top:4px solid var(--info);">
+          <div style="font-size:3rem;margin-bottom:18px;">🧠</div>
+          <h3 style="font-family:'Fraunces',serif;font-size:1.15rem;font-weight:800;color:var(--text-primary);margin-bottom:10px;">Neurological Issues</h3>
+          <p style="color:var(--text-muted);font-size:0.9rem;line-height:1.7;">Artificial colors like Red 40 and Yellow 5 are linked to hyperactivity and attention disorders, especially in children.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <section class="section reveal" style="background:linear-gradient(135deg,var(--forest-deep),var(--forest-mid));text-align:center;color:#fff;">
+    <div class="container-sm">
+      <div style="font-size:0.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mint);margin-bottom:16px;">Get Started — Free</div>
+      <h2 style="font-family:'Fraunces',serif;font-size:clamp(2rem,5vw,3.8rem);font-weight:900;letter-spacing:-0.03em;line-height:1.05;margin-bottom:20px;">
+        Ready to know<br><em style="color:var(--mint);">what you're eating?</em>
+      </h2>
+      <p style="color:rgba(255,255,255,.65);max-width:480px;margin:0 auto 44px;font-size:1.05rem;line-height:1.75;">
+        Scan your first product in under 30 seconds. No sign-up, no account required.
+      </p>
+      <a href="scan.html" class="btn btn-primary btn-lg">📷 Scan Your Food Now</a>
+    </div>
+  </section>
+
+</div>
+
+<script src="js/main.js"></script>
+<script>
+  injectNavbar('index.html');
+  injectFooter();
+
+  // Stats counter
+  const targets = { s1:150, s2:47, s3:850, s4:12, hs1:150, hs2:47, hs3:850 };
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        if (targets[id]) animateCount(e.target, targets[id]);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  Object.keys(targets).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) io.observe(el);
+  });
+</script>
+</body>
+</html>

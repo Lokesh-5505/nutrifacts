@@ -1,0 +1,1014 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Diet & Child Safety – NutriFacts</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      /* Typing animation dots */
+      .typing-dots span {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--text-faint);
+        margin: 0 2px;
+        animation: dotBounce 1.2s ease-in-out infinite;
+      }
+      .typing-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .typing-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @keyframes dotBounce {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.5;
+        }
+        30% {
+          transform: translateY(-8px);
+          opacity: 1;
+        }
+      }
+      /* Chat message fade-in */
+      .msg-row {
+        animation: msgAppear 0.3s ease both;
+      }
+      @keyframes msgAppear {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      /* Send button active state */
+      .chat-send-btn:active {
+        transform: scale(0.92);
+      }
+      /* Input disabled state */
+      .chat-footer input:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-wrap">
+      <div class="page-banner">
+        <div class="eyebrow">AI Assistant &amp; Child Safety</div>
+        <h1>AI Diet Recommendations<br />&amp; Child Safety</h1>
+        <p>
+          Chat with NutriBot and review child safety assessments based on your
+          scanned product.
+        </p>
+      </div>
+
+      <section class="section">
+        <div class="container">
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 36px;
+              align-items: start;
+            "
+          >
+            <!-- ═══ LEFT: AI CHAT ═══ -->
+            <div>
+              <div style="margin-bottom: 18px">
+                <h2
+                  style="
+                    font-family: &quot;Fraunces&quot;, serif;
+                    font-size: 1.8rem;
+                    font-weight: 800;
+                    color: var(--text-primary);
+                  "
+                >
+                  🤖 AI Nutrition Assistant
+                </h2>
+                <p style="color: var(--text-muted); margin-top: 6px">
+                  Ask anything about nutrition, ingredients, or food safety
+                </p>
+              </div>
+
+              <!-- Product context bar -->
+              <div
+                id="ctx-bar"
+                style="
+                  display: none;
+                  background: var(--cream);
+                  border-radius: var(--r-sm);
+                  padding: 12px 18px;
+                  margin-bottom: 18px;
+                  border: 1px solid var(--foam);
+                  align-items: center;
+                  gap: 10px;
+                  flex-wrap: wrap;
+                "
+              >
+                <span
+                  style="
+                    font-size: 0.78rem;
+                    color: var(--text-muted);
+                    font-weight: 600;
+                  "
+                  >Last scanned:</span
+                >
+                <span
+                  id="ctx-name"
+                  style="
+                    font-family: &quot;Fraunces&quot;, serif;
+                    font-weight: 700;
+                    color: var(--text-primary);
+                    font-size: 0.9rem;
+                  "
+                ></span>
+                <span id="ctx-badge" style="margin-left: 4px"></span>
+              </div>
+
+              <!-- Chat Box -->
+              <div class="chat-box">
+                <div class="chat-top">
+                  <div class="chat-avatar">🤖</div>
+                  <div>
+                    <div class="chat-top-name">NutriBot AI</div>
+                    <div class="chat-top-sub">
+                      Demo Mode · Food Safety Assistant
+                    </div>
+                  </div>
+                  <div class="online-dot"></div>
+                </div>
+
+                <div class="chat-msgs" id="chat-msgs">
+                  <!-- Initial greeting injected by JS -->
+                </div>
+
+                <div class="chat-footer">
+                  <input
+                    type="text"
+                    id="chat-input"
+                    placeholder="Ask about nutrition, diet, or food safety…"
+                    onkeypress="
+                      if (event.key === 'Enter' && !event.repeat) sendMsg();
+                    "
+                  />
+                  <button
+                    class="chat-send-btn"
+                    onclick="sendMsg()"
+                    id="send-btn"
+                  >
+                    ➤
+                  </button>
+                </div>
+              </div>
+
+              <!-- Quick Prompt Chips -->
+              <div style="margin-top: 16px">
+                <div
+                  style="
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                    color: var(--text-faint);
+                    letter-spacing: 0.08em;
+                    text-transform: uppercase;
+                    margin-bottom: 10px;
+                  "
+                >
+                  💡 Quick Questions
+                </div>
+                <div class="chip-row">
+                  <button
+                    class="chip"
+                    onclick="
+                      quickAsk(
+                        'What are healthier alternatives to this product?',
+                      )
+                    "
+                  >
+                    Healthier alternatives?
+                  </button>
+                  <button
+                    class="chip"
+                    onclick="
+                      quickAsk('How often can I safely eat this per week?')
+                    "
+                  >
+                    Safe frequency?
+                  </button>
+                  <button
+                    class="chip"
+                    onclick="
+                      quickAsk(
+                        'What are the long-term health effects of these ingredients?',
+                      )
+                    "
+                  >
+                    Long-term effects?
+                  </button>
+                  <button
+                    class="chip"
+                    onclick="quickAsk('Give me a healthy meal plan for today')"
+                  >
+                    Meal plan today?
+                  </button>
+                  <button
+                    class="chip"
+                    onclick="quickAsk('Is this product safe for children?')"
+                  >
+                    Safe for kids?
+                  </button>
+                  <button
+                    class="chip"
+                    onclick="quickAsk('What is High Fructose Corn Syrup?')"
+                  >
+                    What is HFCS?
+                  </button>
+                </div>
+              </div>
+
+              <!-- Demo note -->
+              <div class="alert-bar info" style="margin-top: 18px">
+                <div class="alert-icon">ℹ️</div>
+                <div>
+                  <div class="alert-title">Demo Chatbot Mode</div>
+                  <div class="alert-desc">
+                    NutriBot responds to common nutrition and food safety
+                    questions using a built-in knowledge base. Try the quick
+                    questions above or type your own!
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ═══ RIGHT: Child Safety + Diet Recs ═══ -->
+            <div style="display: flex; flex-direction: column; gap: 28px">
+              <!-- Child safety from last scan -->
+              <div>
+                <h2
+                  style="
+                    font-family: &quot;Fraunces&quot;, serif;
+                    font-size: 1.8rem;
+                    font-weight: 800;
+                    color: var(--text-primary);
+                    margin-bottom: 18px;
+                  "
+                >
+                  👶 Child Safety Assessment
+                </h2>
+                <div
+                  id="cs-scan"
+                  style="display: none; margin-bottom: 20px"
+                ></div>
+
+                <!-- General child safety card -->
+                <div class="cs-card">
+                  <div class="cs-card-head">
+                    <span style="font-size: 1.8rem">👶</span>
+                    <h3>General Child Safety Guidelines</h3>
+                  </div>
+                  <div class="cs-item">
+                    <div class="cs-item-icon">❌</div>
+                    <div class="cs-item-text">
+                      <strong>Caffeine</strong> — Strictly avoid for children
+                      under 12. Present in sodas, energy drinks, and
+                      chocolate-flavored products.
+                    </div>
+                  </div>
+                  <div class="cs-item">
+                    <div class="cs-item-icon">⚠️</div>
+                    <div class="cs-item-text">
+                      <strong
+                        >Artificial Colors (Red 40, Yellow 5, Blue 1)</strong
+                      >
+                      — Linked to hyperactivity and ADHD symptoms. EU requires
+                      warning labels on all products containing these dyes.
+                    </div>
+                  </div>
+                  <div class="cs-item">
+                    <div class="cs-item-icon">❌</div>
+                    <div class="cs-item-text">
+                      <strong>Sodium Nitrate</strong> — Found in hot dogs,
+                      bacon, deli meats. Should be strictly limited in
+                      children's diets due to cancer risk.
+                    </div>
+                  </div>
+                  <div class="cs-item">
+                    <div class="cs-item-icon">⚠️</div>
+                    <div class="cs-item-text">
+                      <strong>Excess Added Sugar</strong> — Children should
+                      consume less than 25g of added sugar per day (WHO). Most
+                      packaged snacks exceed this in one serving.
+                    </div>
+                  </div>
+                  <div class="cs-item">
+                    <div class="cs-item-icon">⚠️</div>
+                    <div class="cs-item-text">
+                      <strong>Aspartame &amp; Ace-K</strong> — Artificial
+                      sweeteners not recommended for young children due to
+                      unknown long-term developmental effects.
+                    </div>
+                  </div>
+                  <div class="cs-item">
+                    <div class="cs-item-icon">❌</div>
+                    <div class="cs-item-text">
+                      <strong>Polysorbate 80 &amp; CMC</strong> — May damage the
+                      gut lining. Developing immune systems in children are
+                      especially vulnerable to microbiome disruption.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Diet recommendations from scan -->
+              <div>
+                <h2
+                  style="
+                    font-family: &quot;Fraunces&quot;, serif;
+                    font-size: 1.8rem;
+                    font-weight: 800;
+                    color: var(--text-primary);
+                    margin-bottom: 18px;
+                  "
+                >
+                  🥦 AI Diet Recommendations
+                </h2>
+                <div id="diet-recs">
+                  <div
+                    style="
+                      background: var(--surface);
+                      border-radius: var(--r-md);
+                      padding: 32px;
+                      text-align: center;
+                      border: 1.5px dashed rgba(197, 235, 213, 0.7);
+                    "
+                  >
+                    <div style="font-size: 2.5rem; margin-bottom: 12px">🥗</div>
+                    <p style="color: var(--text-muted)">
+                      Scan a product to get personalised AI diet
+                      recommendations.
+                    </p>
+                    <a
+                      href="scan.html"
+                      class="btn btn-primary btn-sm"
+                      style="margin-top: 16px"
+                      >Scan a Product</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ DIET PRINCIPLES ═══ -->
+          <div style="margin-top: 80px">
+            <div class="sec-header centered reveal">
+              <div class="sec-eyebrow">Evidence-Based Nutrition</div>
+              <h2>Science-backed diet<br /><em>principles to live by</em></h2>
+            </div>
+            <div class="cards-grid-3 stagger">
+              <div
+                class="feat-card reveal"
+                style="border-top: 3px solid var(--safe)"
+              >
+                <div style="font-size: 2rem; margin-bottom: 14px">🥦</div>
+                <h3>Eat the Rainbow</h3>
+                <p>
+                  Aim for 5+ servings of colorful fruits and vegetables daily.
+                  Different colors provide different phytonutrients and
+                  antioxidants that work synergistically.
+                </p>
+              </div>
+              <div
+                class="feat-card reveal"
+                style="border-top: 3px solid var(--mint)"
+              >
+                <div style="font-size: 2rem; margin-bottom: 14px">🐟</div>
+                <h3>Omega-3 Rich Foods</h3>
+                <p>
+                  Fatty fish (salmon, mackerel), chia seeds, and walnuts reduce
+                  systemic inflammation. WHO recommends at least 2 fish servings
+                  per week.
+                </p>
+              </div>
+              <div
+                class="feat-card reveal"
+                style="border-top: 3px solid var(--warn)"
+              >
+                <div style="font-size: 2rem; margin-bottom: 14px">🫘</div>
+                <h3>High-Fibre Diet</h3>
+                <p>
+                  25–38g of dietary fibre per day from whole grains, legumes,
+                  and vegetables feeds healthy gut bacteria and reduces
+                  colorectal cancer risk by up to 40%.
+                </p>
+              </div>
+              <div
+                class="feat-card reveal"
+                style="border-top: 3px solid var(--info)"
+              >
+                <div style="font-size: 2rem; margin-bottom: 14px">💧</div>
+                <h3>Hydration First</h3>
+                <p>
+                  Drink 8–10 glasses of water daily. Proper hydration improves
+                  kidney function, energy, cognitive performance, and the body's
+                  ability to remove toxins.
+                </p>
+              </div>
+              <div
+                class="feat-card reveal"
+                style="border-top: 3px solid var(--safe)"
+              >
+                <div style="font-size: 2rem; margin-bottom: 14px">⏰</div>
+                <h3>Time-Restricted Eating</h3>
+                <p>
+                  A 12–16 hour eating window supports cellular autophagy and
+                  insulin sensitivity reset. Consult your doctor before starting
+                  any fasting protocol.
+                </p>
+              </div>
+              <div
+                class="feat-card reveal"
+                style="border-top: 3px solid var(--mint)"
+              >
+                <div style="font-size: 2rem; margin-bottom: 14px">🧘</div>
+                <h3>Mindful Eating</h3>
+                <p>
+                  Eat slowly, without screens. It takes 20 minutes for satiety
+                  signals to reach your brain — rushing meals is one of the
+                  leading causes of overeating.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+      injectNavbar("ai-diet.html");
+      injectFooter();
+
+      /* ═══════════════════════════════════════════════
+     DEMO CHATBOT — keyword-matching response engine
+     No API key or internet connection required
+     ═══════════════════════════════════════════════ */
+
+      /* ── Demo response database ─────────────────── */
+      var botResponses = [
+        {
+          keys: ["hfcs", "high fructose", "corn syrup", "fructose"],
+          reply:
+            "🍬 <strong>High Fructose Corn Syrup (HFCS)</strong> is a highly processed sweetener made from corn starch. Unlike regular sugar, HFCS is metabolised directly by the liver, which can lead to fat accumulation and insulin resistance over time.\n\n⚠️ Linked to: Obesity, Type 2 Diabetes, Non-alcoholic fatty liver disease, Metabolic syndrome.\n\n✅ <strong>Better alternative:</strong> Raw honey, pure maple syrup, or coconut sugar — all have lower glycaemic impact when used in moderation.",
+        },
+        {
+          keys: ["palm oil", "palmolein", "palm"],
+          reply:
+            '🌴 <strong>Palm Oil</strong> is widely used because it is cheap and shelf-stable, but it has several concerns:\n\n• High in saturated fat — may raise LDL ("bad") cholesterol\n• Environmental impact: linked to deforestation\n• Refined versions may contain glycidyl esters, which are probable carcinogens\n\n✅ <strong>Better choice:</strong> Avocado oil, extra virgin olive oil, or cold-pressed coconut oil in moderation.',
+        },
+        {
+          keys: [
+            "polysorbate",
+            "emulsifier",
+            "cmc",
+            "carboxymethyl",
+            "carrageenan",
+            "e433",
+            "e466",
+          ],
+          reply:
+            "🧪 <strong>Artificial Emulsifiers</strong> (like Polysorbate 80, CMC, Carrageenan) are used to blend oil and water in processed foods.\n\n🔬 Research concern: These emulsifiers can erode the protective mucus layer lining your intestines, promoting gut inflammation, gut dysbiosis, and increased risk of IBD (Crohn's disease, colitis).\n\n⚠️ Especially concerning for children and people with IBS.\n\n✅ <strong>Safer choice:</strong> Look for products using sunflower lecithin as emulsifier, or choose whole foods with natural fat structures.",
+        },
+        {
+          keys: [
+            "bha",
+            "bht",
+            "tbhq",
+            "preservative",
+            "preservatives",
+            "sodium benzoate",
+            "nitrate",
+            "nitrite",
+          ],
+          reply:
+            '🧬 <strong>Chemical Preservatives</strong> like BHA, BHT, and TBHQ are petroleum-derived antioxidants that prevent fat from going rancid in packaged foods.\n\n⚠️ Concerns:\n• BHA is classified as a "reasonably anticipated human carcinogen" by the National Toxicology Program\n• TBHQ in high doses causes liver enlargement and vision issues in animal studies\n• Sodium Nitrate (in cured meats) forms carcinogenic nitrosamines in the body\n\n✅ <strong>Better preservative to look for:</strong> "Mixed tocopherols" (natural Vitamin E) — works just as well with no health concerns.',
+        },
+        {
+          keys: [
+            "artificial color",
+            "artificial colour",
+            "red 40",
+            "yellow 5",
+            "food dye",
+            "food color",
+            "tartrazine",
+            "allura",
+          ],
+          reply:
+            '🎨 <strong>Artificial Food Colors</strong> (Red 40, Yellow 5/6, Blue 1) are synthetic dyes derived from petroleum.\n\n📚 The Southampton Study (2007) found that mixtures of artificial colors significantly increased hyperactivity in children — which led the EU to require warning labels on all products containing these dyes.\n\n⚠️ Also linked to: Allergic reactions, possible carcinogenicity (Yellow 6), behavioral issues.\n\n✅ <strong>Natural alternatives:</strong> Beet root (red), turmeric (yellow), spirulina (blue/green), butterfly pea flower (purple). Look for "naturally colored" products.',
+        },
+        {
+          keys: [
+            "sugar",
+            "added sugar",
+            "sucrose",
+            "glucose",
+            "dextrose",
+            "maltose",
+          ],
+          reply:
+            "🍬 <strong>Added Sugar</strong> is one of the most harmful ingredients in modern diets when consumed in excess.\n\n📊 WHO Guidelines:\n• Adults: Less than 25g (6 teaspoons) of added sugar per day\n• Children: Less than 12g (3 teaspoons) per day\n\n⚠️ Most packaged snacks exceed the daily child limit in just ONE serving!\n\nHigh sugar consumption leads to: Blood sugar spikes, insulin resistance, tooth decay, Type 2 diabetes, fatty liver disease, and obesity.\n\n✅ <strong>Best swaps:</strong> Whole fruits (natural sugar + fibre), dates, small amounts of raw honey or maple syrup.",
+        },
+        {
+          keys: [
+            "aspartame",
+            "saccharin",
+            "sucralose",
+            "acesulfame",
+            "artificial sweetener",
+            "sweetener",
+            "diet sugar",
+            "splenda",
+            "sweet n low",
+          ],
+          reply:
+            '⚗️ <strong>Artificial Sweeteners</strong> — while calorie-free, they come with growing concerns:\n\n🔬 WHO/IARC 2023: Aspartame classified as <em>"possibly carcinogenic to humans"</em> (Group 2B)\n🦠 Research shows artificial sweeteners alter gut microbiome composition, potentially leading to glucose intolerance\n💊 Acesulfame K: Approved based on studies from the 1970s — considered outdated by modern researchers\n\n✅ <strong>Safer alternatives:</strong> Stevia (plant-derived), monk fruit extract — both zero-calorie and without the same concerns.',
+        },
+        {
+          keys: ["msg", "monosodium glutamate", "glutamate"],
+          reply:
+            '🧂 <strong>Monosodium Glutamate (MSG)</strong> is a flavor enhancer that amplifies savory taste (umami).\n\n📋 FDA Status: Classified as "Generally Recognized As Safe" (GRAS)\n\n⚠️ Some individuals report "MSG Symptom Complex" — headaches, flushing, sweating — though clinical evidence is mixed and most people tolerate it well at normal food doses.\n\n🧠 Interesting fact: MSG is simply the sodium salt of glutamic acid, an amino acid naturally occurring in tomatoes, Parmesan cheese, and soy sauce.\n\nConclusion: For most people at normal dietary doses, MSG is safe. Those with sensitivity should simply limit intake.',
+        },
+        {
+          keys: [
+            "alternative",
+            "alternatives",
+            "healthier",
+            "instead of",
+            "replace",
+            "substitute",
+            "swap",
+            "better option",
+          ],
+          reply:
+            "🥗 <strong>Healthy Alternatives to Common Processed Snacks:</strong>\n\n🍪 Cookies → Homemade oat cookies, Medjool dates + nut butter\n🥔 Chips → Baked kale chips, roasted chickpeas, air-popped popcorn\n🥤 Sodas → Kombucha, sparkling water + lemon, coconut water\n🍫 Candy → Fresh berries, 85% dark chocolate, frozen banana ice cream\n🍞 White bread → 100% whole grain, sourdough, Ezekiel bread\n🥛 Flavored yogurt → Plain Greek yogurt + honey + real fruit\n\n💡 <strong>Golden Rule:</strong> Choose foods with fewer than 5 ingredients, where you can recognise and pronounce every single one.",
+        },
+        {
+          keys: [
+            "how often",
+            "frequency",
+            "how many times",
+            "once a week",
+            "safe to eat",
+            "how much",
+          ],
+          reply:
+            "📅 <strong>Safe Consumption Frequency Guidelines:</strong>\n\n✅ <strong>Daily (fine):</strong> Whole fruits, vegetables, legumes, whole grains, plain nuts, plain yogurt\n\n⚠️ <strong>2–3x per week (limit):</strong> Dark chocolate, occasional packaged snacks with moderate risk score\n\n❌ <strong>Rarely or avoid:</strong> Ultra-processed snacks (chips, cookies), processed meats, sugary drinks, energy drinks\n\n🎯 <strong>Rule of thumb:</strong> If a product has a NutriFacts score below 50, limit to once per week maximum. Below 30, avoid regular consumption entirely.",
+        },
+        {
+          keys: [
+            "long term",
+            "long-term",
+            "health effect",
+            "health effects",
+            "chronic",
+            "disease",
+            "cancer",
+            "diabetes",
+            "heart",
+          ],
+          reply:
+            "⏳ <strong>Long-Term Effects of Ultra-Processed Food Consumption:</strong>\n\n🫀 <strong>Heart Disease:</strong> Trans fats raise LDL cholesterol and directly increase cardiovascular risk. Even small daily amounts compound over years.\n\n🩸 <strong>Type 2 Diabetes:</strong> Repeated blood sugar spikes from HFCS and refined sugars progressively damage insulin sensitivity over 10–15 years.\n\n🦠 <strong>Gut Dysbiosis:</strong> Artificial emulsifiers erode the intestinal mucus layer, disrupting the balance of gut bacteria — linked to IBD, autoimmune conditions, and even mental health.\n\n🧠 <strong>Cognitive Decline:</strong> Studies link ultra-processed food diets to increased risk of dementia and cognitive decline with age.\n\n📌 The WHO recommends limiting ultra-processed foods to less than 10% of your total diet.",
+        },
+        {
+          keys: [
+            "child",
+            "children",
+            "kids",
+            "baby",
+            "toddler",
+            "infant",
+            "safe for kids",
+          ],
+          reply:
+            "👶 <strong>Child Food Safety Assessment:</strong>\n\n❌ <strong>Strictly Avoid for Children Under 12:</strong>\n• Caffeine (sodas, energy drinks, dark chocolate in large amounts)\n• Sodium Nitrate / Nitrite (hot dogs, bacon, deli meats)\n• Polysorbate 80 &amp; CMC emulsifiers (damages developing gut lining)\n\n⚠️ <strong>Severely Limit:</strong>\n• Added sugar: Max 12g/day for children (WHO)\n• Artificial colors (Red 40, Yellow 5): Linked to hyperactivity and ADHD\n• Aspartame &amp; Ace-K: Unknown long-term developmental effects\n\n✅ <strong>Best foods for children:</strong> Fresh fruits, vegetables, whole grains, legumes, plain dairy, eggs, and lean proteins.",
+        },
+        {
+          keys: [
+            "meal plan",
+            "meal planning",
+            "what to eat",
+            "daily diet",
+            "food for today",
+            "diet plan",
+            "eat today",
+          ],
+          reply:
+            "🥗 <strong>Sample Healthy 1-Day Meal Plan:</strong>\n\n☀️ <strong>Breakfast (7–8am):</strong>\nOats with fresh berries + chia seeds + almond milk\n→ Rich in fibre, antioxidants, omega-3s\n\n🌤️ <strong>Mid-Morning Snack (10am):</strong>\nApple + a handful of almonds\n→ Natural sugar + healthy fat for sustained energy\n\n☀️ <strong>Lunch (1pm):</strong>\nBrown rice + grilled salmon + steamed broccoli + lemon\n→ Omega-3s, fibre, vitamins C &amp; K\n\n🌤️ <strong>Afternoon Snack (3:30pm):</strong>\nPlain Greek yogurt + honey + walnuts\n→ Probiotics, protein, healthy fats\n\n🌙 <strong>Dinner (7pm):</strong>\nLentil soup + whole grain bread + mixed salad with olive oil\n→ Plant protein, iron, complex carbs\n\n💧 <strong>Throughout the day:</strong> 8–10 glasses of water",
+        },
+        {
+          keys: [
+            "sodium",
+            "salt",
+            "high sodium",
+            "blood pressure",
+            "hypertension",
+          ],
+          reply:
+            '🧂 <strong>Sodium & Blood Pressure:</strong>\n\nThe WHO recommends less than <strong>2,000mg of sodium per day</strong> for adults (about 1 teaspoon of salt).\n\n⚠️ Most packaged foods are dangerously high in sodium:\n• Instant noodles: 800–1500mg per serving\n• Canned soups: 600–900mg per serving\n• Potato chips: 150–200mg per serving\n\n🫀 High sodium intake increases blood pressure, which is the #1 risk factor for heart disease and stroke worldwide.\n\n✅ <strong>Lower sodium alternatives:</strong>\n• Season food with herbs, spices, lemon juice\n• Choose "low sodium" or "no added salt" versions\n• Cook at home — you control exactly how much salt goes in',
+        },
+        {
+          keys: [
+            "fibre",
+            "fiber",
+            "gut health",
+            "gut bacteria",
+            "microbiome",
+            "probiotic",
+            "prebiotic",
+          ],
+          reply:
+            "🌿 <strong>Gut Health & Dietary Fibre:</strong>\n\n📊 You need <strong>25–38g of fibre per day</strong> (most people only get 15g).\n\n🦠 Fibre feeds your gut bacteria (prebiotics), which produce short-chain fatty acids that:\n• Protect the gut lining\n• Reduce inflammation throughout the body\n• Regulate appetite and blood sugar\n• Support immune function\n\n✅ <strong>Best fibre sources:</strong>\nLentils (8g/cup), Chickpeas (7g/cup), Chia seeds (10g/2tbsp), Oats (4g/cup), Broccoli (5g/cup), Avocado (10g each)\n\n⚠️ <strong>Avoid:</strong> Artificial emulsifiers (Polysorbate 80, CMC) — they actively damage the gut microbiome.",
+        },
+        {
+          keys: [
+            "vitamin",
+            "vitamins",
+            "mineral",
+            "minerals",
+            "nutrition",
+            "nutrient",
+            "nutrients",
+          ],
+          reply:
+            "💊 <strong>Key Vitamins & Minerals to Focus On:</strong>\n\n🌞 <strong>Vitamin D:</strong> 80% of people are deficient. Found in fatty fish, egg yolks, fortified foods. Critical for immunity and bone health.\n\n🩸 <strong>Iron:</strong> Essential for energy and oxygen transport. Best absorbed from red meat + Vitamin C. Spinach iron is poorly absorbed without Vitamin C.\n\n🧠 <strong>Omega-3 (DHA/EPA):</strong> Brain and heart health. Found in fatty fish, algae, walnuts, flaxseed.\n\n🦴 <strong>Calcium + Magnesium:</strong> Bone health, muscle function, sleep quality. Found in dairy, leafy greens, nuts, seeds.\n\n⚡ <strong>Vitamin B12:</strong> Critical for nerve function — only found naturally in animal products. Vegans must supplement.",
+        },
+        {
+          keys: [
+            "weight",
+            "lose weight",
+            "weight loss",
+            "fat",
+            "obesity",
+            "overweight",
+            "diet to lose",
+          ],
+          reply:
+            '⚖️ <strong>Evidence-Based Weight Management Tips:</strong>\n\n✅ <strong>What actually works:</strong>\n1. Eat whole foods — high volume, lower calorie density\n2. Prioritise protein (keeps you full): eggs, legumes, lean meat, Greek yogurt\n3. Reduce ultra-processed food (they are engineered to make you overeat)\n4. Eat slowly — it takes 20 minutes for your brain to register fullness\n5. Sleep 7–9 hours — poor sleep raises hunger hormones by 25%\n6. Walk 8,000–10,000 steps daily\n\n❌ <strong>What does NOT work long-term:</strong>\nExtreme calorie restriction, skipping meals, "detox" teas, diet pills\n\n📌 The best diet for weight loss is the one you can actually maintain. Focus on sustainable habits over quick fixes.',
+        },
+        {
+          keys: [
+            "fda",
+            "banned",
+            "regulation",
+            "approved",
+            "safe",
+            "gras",
+            "government",
+          ],
+          reply:
+            '🇺🇸 <strong>Recent FDA Safety Actions on Food Ingredients:</strong>\n\n❌ <strong>BANNED:</strong>\n• Trans Fats (Partially Hydrogenated Oils) — 2018 — heart disease risk\n• Red Dye No. 3 (Erythrosine) — January 2025 — thyroid tumor risk\n\n⚠️ <strong>REVOKED/RESTRICTED:</strong>\n• Brominated Vegetable Oil (BVO) — 2024 — accumulates in body tissues\n• Potassium Bromate — banned in EU/Canada, still permitted in USA\n\n🔍 <strong>Under Review:</strong>\n• Titanium Dioxide (E171) — banned in EU since 2022, still in use in USA\n• Caramel Color IV — contains 4-MEI, a probable carcinogen\n\n💡 <strong>Note:</strong> FDA "GRAS" (Generally Recognized As Safe) status is often based on old research from the 1950s–1970s and may not reflect current science.',
+        },
+        {
+          keys: [
+            "hello",
+            "hi",
+            "hey",
+            "greetings",
+            "good morning",
+            "good evening",
+            "good afternoon",
+            "namaste",
+          ],
+          reply:
+            "👋 Hello! I'm <strong>NutriBot</strong>, your AI food safety and nutrition assistant! 🌿\n\nI can help you with:\n\n📋 Explaining harmful food ingredients (HFCS, BHT, Polysorbate 80…)\n🥗 Healthy food alternatives and swaps\n👶 Child food safety guidance\n📅 Meal planning and diet tips\n🇺🇸 FDA safety information and bans\n⏳ Long-term health effects of food additives\n\nJust type your question or click one of the quick question buttons above! What would you like to know? 😊",
+        },
+        {
+          keys: [
+            "thank",
+            "thanks",
+            "thank you",
+            "helpful",
+            "great",
+            "good",
+            "awesome",
+            "nice",
+          ],
+          reply:
+            "😊 You're very welcome! I'm glad I could help.\n\nRemember — small, consistent changes in what you eat add up to huge health improvements over time. You don't need to eat perfectly every day; just aim to make slightly better choices than yesterday.\n\n🌿 <strong>Quick reminder:</strong> Check the Harmful Ingredients page for a full database, and use the Scanner to analyze any packaged food on the go!\n\nAnything else you'd like to know about food safety or nutrition?",
+        },
+      ];
+
+      /* ── Default fallback responses ─────────────── */
+      var fallbackReplies = [
+        "🤔 Great question! I don't have a specific answer for that in my demo knowledge base, but here's a general tip:\n\nAlways check the ingredients list before buying any packaged food. The most important rule: if you can't recognise and pronounce most of the ingredients, the product is likely too processed.\n\n💡 Try asking me about: HFCS, emulsifiers, artificial colors, preservatives, MSG, or child safety.",
+        "🌿 I'm not sure about that specific topic in demo mode, but I can tell you this:\n\nThe WHO recommends that ultra-processed foods make up less than 10% of your daily diet. The less processing, the better!\n\n💡 You can also check our <strong>Harmful Ingredient Database</strong> for detailed information on specific additives.",
+        "🥗 That's a bit outside my demo knowledge, but here's some universal food wisdom:\n\nChoose foods with fewer than 5 ingredients, all of which you can recognise. Shop the perimeter of the supermarket where fresh foods live. And cook at home as often as possible — you control everything that goes in.\n\n💡 Try asking me about: meal planning, long-term health effects, or healthy food alternatives!",
+      ];
+      var fallbackIdx = 0;
+
+      /* ── Chat state ─────────────────────────────── */
+      var lastScannedProduct = null;
+      var chatHistory = [];
+      var esc = escapeHTML;
+
+      /* ── Load scan result ───────────────────────── */
+      var r = loadResult();
+      if (r) {
+        lastScannedProduct = r;
+        var ctxBar = document.getElementById("ctx-bar");
+        ctxBar.style.display = "flex";
+        document.getElementById("ctx-name").textContent =
+          r.productName || "Scanned Product";
+        document.getElementById("ctx-badge").innerHTML =
+          '<span class="badge ' +
+          scoreBadgeClass(r.healthScore) +
+          '">' +
+          scoreLabel(r.healthScore) +
+          "</span>";
+
+        /* Diet recommendations */
+        if (r.dietRecommendations && r.dietRecommendations.length > 0) {
+          var dietHTML = "";
+          var dietIcons = ["🥗", "🌿", "💡", "🍎", "🏃"];
+          for (var d = 0; d < r.dietRecommendations.length; d++) {
+            dietHTML +=
+              '<div class="alert-bar safe" style="margin-bottom:10px;">' +
+              '<div class="alert-icon">' +
+              dietIcons[d % 5] +
+              "</div>" +
+              '<div><div class="alert-desc" style="color:var(--text-body);">' +
+              esc(r.dietRecommendations[d]) +
+              "</div></div>" +
+              "</div>";
+          }
+          document.getElementById("diet-recs").innerHTML = dietHTML;
+        }
+
+        /* Child safety */
+        if (r.childSafety) {
+          var cs = r.childSafety;
+          var csIcons = { safe: "✅", caution: "⚠️", unsafe: "❌" };
+          var csColors = {
+            safe: "#166534",
+            caution: "#92400e",
+            unsafe: "var(--danger)",
+          };
+          var csCardStyle = {
+            safe: "background:var(--safe-bg);border-color:rgba(22,163,74,.25)",
+            caution: "background:#fffbeb;border-color:rgba(217,119,6,.25)",
+            unsafe:
+              "background:var(--danger-bg);border-color:rgba(217,43,58,.25)",
+          };
+          var st =
+            ["safe", "caution", "unsafe"].indexOf(cs.status) !== -1
+              ? cs.status
+              : "caution";
+          document.getElementById("cs-scan").style.display = "block";
+          document.getElementById("cs-scan").innerHTML =
+            '<div class="cs-card" style="' +
+            (csCardStyle[st] || csCardStyle.caution) +
+            '">' +
+            '<div class="cs-card-head">' +
+            '<span style="font-size:1.8rem;">' +
+            (csIcons[st] || "⚠️") +
+            "</span>" +
+            "<div>" +
+            '<h3 style="color:' +
+            (csColors[st] || "#92400e") +
+            ';">For ' +
+            esc(r.productName || "Scanned Product") +
+            "</h3>" +
+            '<p style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">Based on AI ingredient analysis</p>' +
+            "</div>" +
+            "</div>" +
+            '<div class="cs-item">' +
+            '<div class="cs-item-icon">' +
+            (csIcons[st] || "⚠️") +
+            "</div>" +
+            '<div class="cs-item-text"><strong style="color:' +
+            (csColors[st] || "#92400e") +
+            '">Status: ' +
+            esc(st.toUpperCase()) +
+            "</strong> — " +
+            esc(cs.reason || "") +
+            "</div>" +
+            "</div>" +
+            (cs.ageWarning
+              ? '<div class="cs-item"><div class="cs-item-icon">📋</div><div class="cs-item-text">' +
+                esc(cs.ageWarning) +
+                "</div></div>"
+              : "") +
+            "</div>";
+        }
+      }
+
+      /* ── Initial greeting ───────────────────────── */
+      window.addEventListener("DOMContentLoaded", function () {
+        if (r) {
+          var greetingScore = Number.isFinite(Number(r.healthScore))
+            ? Math.max(0, Math.min(100, Number(r.healthScore)))
+            : 50;
+          addBot(
+            "👋 Hello! I've loaded your last scan — <strong>" +
+              esc(r.productName || "Scanned Product") +
+              "</strong> (Score: " +
+              greetingScore +
+              "/100).\n\nI found <strong>" +
+              (r.harmfulIngredients ? r.harmfulIngredients.length : 0) +
+              "</strong> potentially harmful ingredient(s). Would you like me to explain any of them, suggest alternatives, or create a meal plan that avoids these ingredients? Just ask!",
+          );
+        } else {
+          addBot(
+            "👋 Hello! I'm <strong>NutriBot</strong>, your AI food safety assistant! 🌿\n\nI can explain harmful food ingredients, suggest healthier alternatives, help with meal planning, and provide child safety guidance.\n\nScan a product first to get personalized advice, or just type any nutrition question below!",
+          );
+        }
+      });
+
+      /* ── Add bot message ────────────────────────── */
+      function addBot(html) {
+        var msgs = document.getElementById("chat-msgs");
+        var row = document.createElement("div");
+        row.className = "msg-row bot";
+        row.innerHTML =
+          '<div class="msg-av">🤖</div>' +
+          '<div class="msg-bubble">' +
+          html.replace(/\n/g, "<br>") +
+          "</div>";
+        msgs.appendChild(row);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+
+      /* ── Add user message ───────────────────────── */
+      function addUser(text) {
+        var msgs = document.getElementById("chat-msgs");
+        var row = document.createElement("div");
+        row.className = "msg-row user";
+        row.innerHTML =
+          '<div class="msg-bubble">' + escapeHtml(text) + "</div>";
+        msgs.appendChild(row);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+
+      /* ── Typing indicator ───────────────────────── */
+      function showTyping() {
+        var msgs = document.getElementById("chat-msgs");
+        var row = document.createElement("div");
+        row.className = "msg-row bot";
+        row.id = "typing-row";
+        row.innerHTML =
+          '<div class="msg-av">🤖</div>' +
+          '<div class="msg-bubble"><span class="typing-dots"><span></span><span></span><span></span></span></div>';
+        msgs.appendChild(row);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+
+      function hideTyping() {
+        var t = document.getElementById("typing-row");
+        if (t) t.remove();
+      }
+
+      /* ── Find best response ─────────────────────── */
+      function getResponse(text) {
+        var lower = text.toLowerCase();
+
+        /* First check scanned-product-specific questions */
+        if (lastScannedProduct) {
+          if (/safe.*child|child.*safe|kid|children/i.test(lower)) {
+            var cs = lastScannedProduct.childSafety || {};
+            var sts =
+              ["safe", "caution", "unsafe"].indexOf(cs.status) !== -1
+                ? cs.status
+                : "caution";
+            var stIcon = { safe: "✅", caution: "⚠️", unsafe: "❌" };
+            return (
+              (stIcon[sts] || "⚠️") +
+              " <strong>Child Safety for " +
+              esc(lastScannedProduct.productName || "Scanned Product") +
+              ":</strong>\n\n" +
+              "Status: <strong>" +
+              esc(sts.toUpperCase()) +
+              "</strong>\n" +
+              esc(cs.reason || "Please check product carefully.") +
+              "\n\n" +
+              (cs.ageWarning ? "📋 " + esc(cs.ageWarning) : "")
+            );
+          }
+          if (/how often|frequency|times a week|safe to eat/i.test(lower)) {
+            var sc = Number.isFinite(Number(lastScannedProduct.healthScore))
+              ? Math.max(
+                  0,
+                  Math.min(100, Number(lastScannedProduct.healthScore)),
+                )
+              : 50;
+            var freq =
+              sc >= 70
+                ? "daily in moderation"
+                : sc >= 50
+                  ? "2–3 times per week maximum"
+                  : sc >= 30
+                    ? "once per week at most"
+                    : "rarely or avoid entirely";
+            return (
+              "📅 Based on the health score of <strong>" +
+              sc +
+              "/100</strong> for <strong>" +
+              esc(lastScannedProduct.productName || "Scanned Product") +
+              "</strong>:\n\n" +
+              "Recommended frequency: <strong>" +
+              freq +
+              "</strong>\n\n" +
+              "📌 " +
+              esc(
+                lastScannedProduct.servingAdvice ||
+                  "Always stick to the serving size listed on the package.",
+              )
+            );
+          }
+          if (
+            /alternative|instead|replace|healthier|substitute|swap/i.test(lower)
+          ) {
+            var alts = lastScannedProduct.alternatives || [];
+            if (alts.length > 0) {
+              var altText =
+                "🥗 <strong>Healthier alternatives to " +
+                esc(lastScannedProduct.productName || "Scanned Product") +
+                ":</strong>\n\n";
+              for (var ai = 0; ai < alts.length; ai++) {
+                altText +=
+                  "✅ <strong>" +
+                  esc(alts[ai].name) +
+                  "</strong> — " +
+                  esc(alts[ai].reason) +
+                  "\n";
+              }
+              return altText;
+            }
+          }
+        }
+
+        /* Match against keyword database */
+        for (var i = 0; i < botResponses.length; i++) {
+          var resp = botResponses[i];
+          for (var k = 0; k < resp.keys.length; k++) {
+            if (lower.indexOf(resp.keys[k]) !== -1) {
+              return resp.reply;
+            }
+          }
+        }
+
+        /* Fallback */
+        var fb = fallbackReplies[fallbackIdx % fallbackReplies.length];
+        fallbackIdx++;
+        return fb;
+      }
+
+      /* ── Escape HTML ────────────────────────────── */
+      function escapeHtml(text) {
+        return text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      /* ── Send message ───────────────────────────── */
+      function sendMsg() {
+        var input = document.getElementById("chat-input");
+        var sendBtn = document.getElementById("send-btn");
+        var text = input.value.trim();
+        if (!text) return;
+
+        input.value = "";
+        input.disabled = true;
+        sendBtn.disabled = true;
+        addUser(text);
+        showTyping();
+
+        /* Simulate thinking delay (600–1200ms) */
+        var delay = 600 + Math.random() * 600;
+        setTimeout(function () {
+          hideTyping();
+          var reply = getResponse(text);
+          addBot(reply);
+          input.disabled = false;
+          sendBtn.disabled = false;
+          input.focus();
+        }, delay);
+      }
+
+      /* ── Quick ask ──────────────────────────────── */
+      function quickAsk(question) {
+        document.getElementById("chat-input").value = question;
+        sendMsg();
+      }
+    </script>
+  </body>
+</html>

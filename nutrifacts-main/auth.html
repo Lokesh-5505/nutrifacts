@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Signup - NutriFacts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <!-- Navbar will be injected here -->
+    <nav id="navbar"></nav>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>NutriFacts</h1>
+                <p>Your Nutrition Companion</p>
+            </div>
+
+            <!-- Toggle Buttons -->
+            <div class="auth-toggle">
+                <button class="toggle-btn active" id="login-toggle">Login</button>
+                <button class="toggle-btn" id="signup-toggle">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="login-email" 
+                        name="email" 
+                        placeholder="your@email.com"
+                        required
+                    >
+                    <span class="error-message" id="login-email-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="login-password" 
+                            name="password" 
+                            placeholder="Enter your password"
+                            required
+                        >
+                        <button type="button" class="password-toggle" id="login-password-toggle">
+                            <span class="eye-icon">👁️</span>
+                        </button>
+                    </div>
+                    <span class="error-message" id="login-password-error"></span>
+                </div>
+
+                <div class="form-group checkbox">
+                    <input 
+                        type="checkbox" 
+                        id="remember-me" 
+                        name="remember"
+                    >
+                    <label for="remember-me">Remember me</label>
+                </div>
+
+                <button type="submit" class="auth-button">Login</button>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signup-form" class="auth-form">
+                <div class="form-group">
+                    <label for="signup-name">Full Name</label>
+                    <input 
+                        type="text" 
+                        id="signup-name" 
+                        name="name" 
+                        placeholder="Your full name"
+                        required
+                    >
+                    <span class="error-message" id="signup-name-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="signup-email" 
+                        name="email" 
+                        placeholder="your@email.com"
+                        required
+                    >
+                    <span class="error-message" id="signup-email-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="signup-password" 
+                            name="password" 
+                            placeholder="At least 8 characters"
+                            required
+                        >
+                        <button type="button" class="password-toggle" id="signup-password-toggle">
+                            <span class="eye-icon">👁️</span>
+                        </button>
+                    </div>
+                    <div class="password-strength">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strength-fill"></div>
+                        </div>
+                        <span class="strength-text" id="strength-text">Weak</span>
+                    </div>
+                    <span class="error-message" id="signup-password-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="confirm-password" 
+                            name="confirm" 
+                            placeholder="Confirm your password"
+                            required
+                        >
+                        <button type="button" class="password-toggle" id="confirm-password-toggle">
+                            <span class="eye-icon">👁️</span>
+                        </button>
+                    </div>
+                    <span class="error-message" id="confirm-password-error"></span>
+                </div>
+
+                <button type="submit" class="auth-button">Create Account</button>
+            </form>
+
+            <!-- Social Login Options -->
+            <div class="social-login">
+                <p>Or continue with</p>
+                <div class="social-buttons">
+                    <button type="button" class="social-btn google-btn">
+                        <span>🔵</span> Google
+                    </button>
+                    <button type="button" class="social-btn apple-btn">
+                        <span>⚫</span> Apple
+                    </button>
+                </div>
+            </div>
+
+            <!-- Terms -->
+            <p class="terms-text">
+                By signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer will be injected here -->
+    <footer id="footer"></footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
